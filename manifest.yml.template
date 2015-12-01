@@ -1,0 +1,14 @@
+---
+applications:
+- name: pdk-security-starter-nodejs
+  memory: 128M
+  buildpack: nodejs_buildpack
+  #command:  DEBUG=express:* node app.js
+  command:  node app.js
+services:
+  - ${UAA_service_instance}
+env:
+    node_env: cloud
+    uaa_service_label : predix-uaa
+    clientId: ${clientId}
+    base64ClientCredential: ${base64ClientCredential}

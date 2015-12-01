@@ -1,0 +1,8 @@
+{
+  "development":{
+    "clientId": "mvp3_ref_app",
+    "serverUrl" : "https://d7d42a0b-4a38-4530-a2fc-04ed8aaef839.predix-uaa.run.aws-usw02-pr.ice.predix.io",
+    "base64ClientCredential": "bXZwM19yZWZfYXBwOm12cDNyZWZAcHA=",
+		"appUrl": "http://localhost:3000"
+  }
+}
