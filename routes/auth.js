@@ -83,7 +83,7 @@ module.exports = {
       if (req.url.match('/callback')) {
         var params = url.parse(req.url, true).query;
         uaa.getAccessTokenFromCode(params.code, function (token) {
-          console.log('uaa access token: ', token);
+          // console.log('uaa access token: ', token);
           req.session.token = token;
           params.state = params.state || '/secure';
           var url = req._parsedUrl.pathname.replace("/callback", params.state);
@@ -111,4 +111,4 @@ module.exports = {
   deleteSession: function (req) {
     req.session.destroy();
   }
-}
+};

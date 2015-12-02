@@ -4,7 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
+var index = require('./routes/index');
 var secure = require('./routes/secure');
 var auth = require('./routes/auth.js');
 var session = require('express-session');
@@ -38,9 +38,9 @@ if(node_env == 'development') {
 	applicationUrl = devConfig.appUrl;
 } else {
 	// read VCAP_SERVICES
-	var vcapsServices = JSON.parse(process.env.VCAP_SERVICES)
-	var uaaService = vcapsServices[process.env.uaa_service_label]
-	var uaaUri = ''
+	var vcapsServices = JSON.parse(process.env.VCAP_SERVICES);
+	var uaaService = vcapsServices[process.env.uaa_service_label];
+	var uaaUri = '';
 
 	if(uaaService) {
 		//console.log('UAA service URL is  '+uaaService[0].credentials.uri)
@@ -52,7 +52,7 @@ if(node_env == 'development') {
 	//console.log('First applicationUrl is '+applicationUrl)
 
 	// read env properties
-	clientId = process.env.clientId
+	clientId = process.env.clientId;
 	base64ClientCredential = process.env.base64ClientCredential;
 
 }
@@ -66,7 +66,7 @@ if(node_env == 'development') {
 	    base64ClientCredential: base64ClientCredential,
 			callbackUrl: applicationUrl+'/callback',
 			appUrl: applicationUrl
-		}
+		};
 
 		console.log('************'+node_env+'******************');
 		console.log('uaaConfig.clientId = ' +uaaConfig.clientId );
@@ -81,7 +81,7 @@ if(node_env == 'development') {
 var server = app.listen(config.express.port, function () {
   var host = server.address().address;
   var port = server.address().port;
-	console.log ('Server Started at ' + uaaConfig.appUrl)
+	console.log ('Server Started at ' + uaaConfig.appUrl);
 });
 
 //Initializing application modules
@@ -115,7 +115,7 @@ app.get('/removeSession', function (req, res ,next) {
 });
 
 //Setting routes
-app.use('/', routes);
+app.use('/', index);
 app.use('/secure', secure);
 
 // catch 404 and forward to error handler
@@ -130,24 +130,27 @@ app.use(function(req, res, next) {
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
-  app.use(function(err, req, res, next) {
-    res.status(err.status || 500);
-    res.render('error', {
-      message: err.message,
-      error: err
-    });
-  });
+	app.use(function(err, req, res, next) {
+		if (!res.headersSent) {
+	    res.status(err.status || 500);
+	    res.send({
+	      message: err.message,
+	      error: err
+	    });
+		}
+	});
 }
 
 // production error handler
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
-  res.status(err.status || 500);
-  res.render('error', {
-    message: err.message,
-    error: {}
-  });
+	if (!res.headersSent) {
+	  res.status(err.status || 500);
+	  res.send({
+	    message: err.message,
+	    error: {}
+	  });
+	}
 });
-
 
 module.exports = app;
