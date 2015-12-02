@@ -1,40 +1,45 @@
 Predix Development Kit Security Starter NodeJs Application
 ==========================================================
 
-Starter Node application that demonstrates the user authentication .
+This is simple starter Node application that demonstrates user authentication with Predix UAA.
 
 Refer to the pdk-security-starter to configure the UAA client.
 
 ## Running locally
-```
-Setting up the config.json to run locally
+Edit the config.json to run locally for your UAA client.
 
-Edit the config.json file to add the configuration details for above generated client.
 Sample :
+```
 "development":{
   "clientId": "${clientId}",
   "serverUrl" : "${UAA URL}",
   "base64ClientCredential": "${base 64 encoding of clientId:secret}",
   "appUrl": "http://localhost:3000"
 }
+```
+*Note:* You can encode your clientId:secret combination using <https://www.base64encode.org/> or the base64 command on Unix / Mac OSX.
 
-Package and start
+`echo -n clientId:clientSecret | base64`
+
+#### Install and start local web server
+```
 npm install
-node node app.js or npm start
+node app.js or npm start
+```
+Navigate to <http://localhost:3000> in your web browser.
 
 Debugging  
+```
 DEBUG=predix-boot-node-app:* npm start
 DEBUG=express:* npm start
 ```
-
 ## Running in the cloud
-```
-Setting up the manifest for Cloud deployment
+
+Set up the manifest file for Cloud deployment
 1. Copy manifest.yml.template to my-app-manifest.yml.
 2. Edit the my-app-manifest.yml
   1. Replace ${UAA_service_instance} to the service instance name on the cloud foundry for predix UAA.
   2. Replace ${clientId} to the clientId configured on the UAA
   3. Replace ${base64ClientCredential} is the base 64 encoding of clientId:secret
 
-cf push <appName> -f my-app-manifest.yml
-```
+`cf push <appName> -f my-app-manifest.yml`
