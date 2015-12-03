@@ -11,4 +11,4 @@ env:
     node_env: cloud
     uaa_service_label : predix-uaa
     #clientId: {Get client ID and place it here}
-    #base64ClientCredential: {Get client ID and secret base64 encode and place it here}
+    #base64ClientCredential: {Get clientID:clientSecret then base64 encode and place it here}
