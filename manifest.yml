@@ -1,0 +1,14 @@
+---
+applications:
+- name: {Put your app name here}
+  memory: 128M
+  buildpack: nodejs_buildpack
+  #command:  DEBUG=express:* node app.js
+  command:  node app.js
+services:
+  - {Put UAA service instance name here}
+env:
+    node_env: cloud
+    uaa_service_label : predix-uaa
+    #clientId: {Get client ID and place it here}
+    #base64ClientCredential: {Get clientID:clientSecret then base64 encode and place it here}
