@@ -4,7 +4,7 @@
   **/
   function onclick_WindyService_Yearly() {
     var request = new XMLHttpRequest();
-    request.open('GET', '/api/services/windservices/yearly_data/sensor_id/Compressor-2015:CompressionRatio', true);
+    request.open('GET', '/api/services/windservices/yearly_data/', true);
     request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
       var data = JSON.parse(request.responseText);
