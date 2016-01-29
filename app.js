@@ -8,7 +8,11 @@ var index = require('./routes/index');
 var secure = require('./routes/secure');
 var auth = require('./routes/auth.js');
 var session = require('express-session');
+var expressProxy = require('express-http-proxy');
+var proxyMiddleware = require('http-proxy-middleware');
 var environmentVars = require('./config.json');
+var url = require('url');
+var HttpsProxyAgent = require('https-proxy-agent');
 
 // Setting up express server
 var app = express();
@@ -25,6 +29,7 @@ var clientId = '';
 var uaaUri = '';
 var applicationUrl = '';
 var base64ClientCredential = '';
+var windServiceUrl = '';
 
 // checking NODE_ENV to load cloud properties from VCAPS
 // or development properties from config.json
@@ -36,10 +41,13 @@ if(node_env == 'development') {
 	uaaUri = devConfig.serverUrl;
 	base64ClientCredential  = devConfig.base64ClientCredential;
 	applicationUrl = devConfig.appUrl;
+	windServiceUrl = devConfig.windServiceUrl;
 } else {
 	// read VCAP_SERVICES
 	var vcapsServices = JSON.parse(process.env.VCAP_SERVICES);
 	var uaaService = vcapsServices[process.env.uaa_service_label];
+	windServiceUrl = process.env.windServiceUrl;
+
 	var uaaUri = '';
 
 	if(uaaService) {
@@ -75,7 +83,10 @@ if(node_env == 'development') {
 		console.log('uaaConfig.base64ClientCredential = ' +uaaConfig.base64ClientCredential );
 		console.log('uaaConfig.callbackUrl = ' +uaaConfig.callbackUrl );
 		console.log('uaaConfig.appUrl = ' +uaaConfig.appUrl );
+		console.log('windServiceUrl = ' +windServiceUrl );
 		console.log('*******************************');
+
+
 
 
 var server = app.listen(config.express.port, function () {
@@ -96,7 +107,7 @@ app.use(session({
 	name: 'cookie_name',
 	proxy: true,
 	resave: true,
-	saveUninitialized: false}));
+	saveUninitialized: true}));
 
 //Initializing auth.js modules with UAA configurations
 app.use(auth.init(uaaConfig));
@@ -104,7 +115,28 @@ app.use(auth.init(uaaConfig));
 app.get('/favicon.ico', function (req, res) {
   res.send('favicon.ico');
 });
+//Setting up the proxy for calling the windService microservice from the client
+//Since the headers needs to be modified with Authorization header
+//and content-type
+var corporateProxyServer = process.env.http_proxy || process.env.HTTP_PROXY;
+var apiProxyContext = '/api';
+var apiProxyOptions = {
+	target:windServiceUrl,
+	changeOrigin:true,
+	logLevel: 'debug',
+	pathRewrite: { '^/api/': '/'},
+	onProxyReq: function onProxyReq(proxyReq, req, res) {
+		req.headers['Authorization'] = auth.getUserToken(req);
+		req.headers['Content-Type'] = 'application/json';
+		req.headers['Predix-Zone-Id'] = 'd48832e0-069d-4850-b483-29250c65a5df';
+		//console.log('Request headers: ' + JSON.stringify(req.headers));
+	}
+};
+if (corporateProxyServer) {
+	apiProxyOptions.agent = new HttpsProxyAgent(corporateProxyServer);
+}
 
+app.use(proxyMiddleware(apiProxyContext,apiProxyOptions));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -117,6 +149,27 @@ app.get('/removeSession', function (req, res ,next) {
 //Setting routes
 app.use('/', index);
 app.use('/secure', secure);
+
+function getWindServiceUrl(req) {
+	console.log('WindService URL from configuration: '+windServiceUrl);
+  return windServiceUrl;
+}
+
+// using express-http-proxy, we can pass in a function to get the target URL for dynamic proxying:
+app.use('/api', expressProxy(getWindServiceUrl, {
+		https: true,
+		forwardPath: function (req) {
+			//  console.log("Forwarding request: " + req.url);
+			  var forwardPath = url.parse(req.url).path;
+		  //  console.log("forwardPath returns; " + forwardPath);
+			  return forwardPath;
+		},
+  decorateRequest: function(req) {
+       req.headers['Content-Type'] = 'application/json';
+	     return req;
+  }
+	}
+));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

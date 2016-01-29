@@ -3,6 +3,39 @@
 <head>
   <title>Security Starter Node Application</title>
   <link rel="stylesheet" href="stylesheets/style.css"></link>
+  <script>
+function onclick_WindyService_Yearly() {
+    var request = new XMLHttpRequest();
+    request.open('GET', '/api/services/windservices/yearly_data/sensor_id/Compressor-2015:CompressionRatio', true);
+    request.onload = function() {
+    if (request.status >= 200 && request.status < 400) {
+      var data = JSON.parse(request.responseText);
+      document.getElementById("windyService_yearly").innerHTML = "Data for tag :"+data.tags[0].name;
+      parseTSdailyResponse(data);
+      //var str = JSON.stringify(request.responseText, null, 2);
+      //console.log('data is '+str);
+
+    } else {
+      document.getElementById("windyService_yearly").innerHTML = "Error getting data for tags";
+
+    }
+  };
+  request.onerror = function() {
+    document.getElementById("windyService_yearly").innerHTML = "Error getting data for tags";
+};
+request.send();
+}
+function parseTSdailyResponse(data) {
+    var out = "";
+    var i;
+    var datapoints = data.tags[0].results[0].values
+    for(i = 0; i < datapoints.length; i++) {
+        out+= '<div id="'+datapoints[i][0]+'">Time ='+datapoints[i][0]+'Value ='+datapoints[i][1]+'</div>'
+    }
+    //console.log(out);
+    document.getElementById("windyService_yearly_response").innerHTML = out;
+}
+</script>
 </head>
 <body>
   <div class="header">
@@ -21,6 +54,15 @@
         <a href="/logout">Logout</a>
       </li>
     </ul>
+  </div>
+  <div class="container">
+    <h2>TimeSeries data</h2>
+    <p>Click Button to fetch data from backend microservice - WindServices !!</p>
+      <div class="timeseries_container_button">
+        <button type="button" onclick="onclick_WindyService_Yearly();">TimeSeries Yearly Data</button>
+      </div>
+      <p id="windyService_yearly"></p>
+      <div id="windyService_yearly_response"></div>
   </div>
 </body>
 </html>

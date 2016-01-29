@@ -1,8 +1,9 @@
 {
   "development":{
-    "clientId": "mvp3_ref_app",
-    "serverUrl" : "https://d7d42a0b-4a38-4530-a2fc-04ed8aaef839.predix-uaa.run.aws-usw02-pr.ice.predix.io",
-    "base64ClientCredential": "bXZwM19yZWZfYXBwOm12cDNyZWZAcHA=",
-		"appUrl": "http://localhost:3000"
+    "clientId": "ts-client-id",
+    "serverUrl" : "https://0e60feaf-cf63-4aae-8c67-d905095b83f8.predix-uaa.run.aws-usw02-pr.ice.predix.io",
+    "base64ClientCredential": "dHMtY2xpZW50LWlkOnNlY3JldA==",
+		"appUrl": "http://localhost:3000",
+    "windServiceUrl": "http://swapna-winddata-service.run.aws-usw02-pr.ice.predix.io"
   }
 }
