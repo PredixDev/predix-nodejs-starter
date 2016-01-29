@@ -48,9 +48,12 @@ function getLineChartData(data){
   var dataValue = [];
   var dataLabel = [];
   for(i = 0; i < datapoints.length; i++) {
-    d.setUTCSeconds(datapoints[i][0]);
-    dataLabel[d.getMonth()] = monthNames[d.getMonth()]; // time
-    dataValue[d.getMonth()] = datapoints[i][1]; // value
+    var d = new Date(datapoints[i][0]);
+    var formatDate = monthNames[d.getMonth()]+'-'+d.getFullYear()+' '+d.getHours()+':'+d.getSeconds();
+    //dataLabel[d.getMonth()] = monthNames[d.getMonth()]; // time
+    //dataValue[d.getMonth()] = datapoints[i][1]; // value
+    dataLabel[i] = formatDate;
+    dataValue[i] = datapoints[i][1];
   }
 
   var lineChartData = {
@@ -69,7 +72,8 @@ function getLineChartData(data){
         ]
       };
   lineChartData.datasets[0].data = dataValue;
-  lineChartData.labels = monthNames;
+  lineChartData.labels = dataLabel;
+  //lineChartData.labels = monthNames;
 
   //console.log(lineChartData.datasets[0].data);
   //console.log(lineChartData.labels);
@@ -81,10 +85,6 @@ function getLineChartData(data){
 **/
 function constructChartResponse(data) {
 var ctx = document.getElementById("canvas").getContext("2d");
-
-window.myBar = new Chart(document.getElementById("canvasbar").getContext("2d")).Bar(getLineChartData(data), {
-			responsive : true
-		});
 
 window.myLine = new Chart(ctx).Line(getLineChartData(data), {
     responsive: true
