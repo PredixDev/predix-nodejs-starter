@@ -1,5 +1,6 @@
   /**
-  This function is called on the submit button of te
+  This function is called on the submit button of Get timeseries data to fetch
+  data from WindServices.
   **/
   function onclick_WindyService_Yearly() {
     var request = new XMLHttpRequest();
@@ -36,11 +37,13 @@ function parseTSdailyResponse(data) {
   document.getElementById("windyService_yearly_response").innerHTML = out;
 }
 /*
+var for month
 */
 var monthNames = ["January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December"
 ];
 /*
+Method that get the timeseries data and convert that in Chart format.
 */
 function getLineChartData(data){
   var d = new Date(0);
@@ -82,6 +85,7 @@ function getLineChartData(data){
 }
 
 /**
+Method to draw chart
 **/
 function constructChartResponse(data) {
 var ctx = document.getElementById("canvas").getContext("2d");
