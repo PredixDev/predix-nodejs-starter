@@ -6,7 +6,6 @@ var app = express();
 
 router.use(function(req,res,next){
   console.log('check for token valid? ' +auth.hasValidSession(req) );
-
   if (auth.hasValidSession(req)) {
       next();
   } else {

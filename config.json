@@ -1,10 +1,10 @@
 {
   "development":{
-    "clientId": "ts-client-id",
-    "serverUrl" : "https://0e60feaf-cf63-4aae-8c67-d905095b83f8.predix-uaa.run.aws-usw02-pr.ice.predix.io",
-    "base64ClientCredential": "dHMtY2xpZW50LWlkOnNlY3JldA==",
+    "clientId": "app-client-id",
+    "serverUrl" : "https://93cfba56-e9bd-431d-a55e-5a75c6638698.predix-uaa.run.aws-usw02-pr.ice.predix.io",
+    "base64ClientCredential": "YXBwLWNsaWVudC1pZDpzZWNyZXQ=",
 		"appUrl": "http://localhost:3000",
-    "windServiceUrl": "http://swapna-winddata-service.run.aws-usw02-pr.ice.predix.io",
+    "windServiceUrl": "https://winddata-timeseries-service.run.aws-usw02-pr.ice.predix.io",
     "windServiceYearlyApi" :"/services/windservices/yearly_data/sensor_id/",
     "winddatatag":"Compressor-2015:CompressionRatio"
   }
