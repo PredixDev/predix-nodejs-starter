@@ -37,6 +37,7 @@ module.exports = {
       if (!err && response.statusCode == 200) {
         var res = JSON.parse(body);
         var accessToken = res.token_type + ' ' + res.access_token;
+        //console.log('the accessToken is '+accessToken);
         //get user info
         request({
           method: 'post',
@@ -50,8 +51,6 @@ module.exports = {
           }
         }, function (error, response, body) {
           self.user = JSON.parse(body);
-          var res = JSON.parse(body);
-          var accessToken = res.token_type + ' ' + res.access_token;
           successCallback(accessToken);
 	});
       }
@@ -64,7 +63,7 @@ module.exports = {
     //get access token here
     var middlewares = [];
     var uaa = this;
-    console.log(uaa.callbackUrl);
+    //console.log(uaa.callbackUrl);
     var rewriteMiddleware = rewriteModule.getMiddleware([
         {
           from: '^/login(.*)$',
@@ -83,7 +82,7 @@ module.exports = {
       if (req.url.match('/callback')) {
         var params = url.parse(req.url, true).query;
         uaa.getAccessTokenFromCode(params.code, function (token) {
-          // console.log('uaa access token: ', token);
+          //console.log('uaa access token: ', token);
           req.session.token = token;
           params.state = params.state || '/secure';
           var url = req._parsedUrl.pathname.replace("/callback", params.state);
@@ -91,7 +90,7 @@ module.exports = {
           res.setHeader('Location', url);
           res.end();
         }, function (err) {
-          console.error('error getting access token: ', err);
+          //console.error('error getting access token: ', err);
           next(err);
         });
       }
@@ -106,7 +105,12 @@ module.exports = {
   },
   hasValidSession: function (req) {
     var sess=req.session;
+    //console.log("Session token is "+sess.token);
     return !!sess.token;
+  },
+  getUserToken: function (req) {
+    var sess=req.session;
+    return sess.token;
   },
   deleteSession: function (req) {
     req.session.destroy();

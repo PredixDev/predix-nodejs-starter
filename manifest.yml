@@ -12,3 +12,7 @@ env:
     uaa_service_label : predix-uaa
     #clientId: {Get client ID and place it here}
     #base64ClientCredential: {Get clientID:clientSecret then base64 encode and place it here}
+    # Following properties configured only for Timeseries WindyData service Integration
+    #windServiceUrl: "{URL of the microservice}"
+    #windServiceYearlyApi : /services/windservices/yearly_data/sensor_id/
+    #winddatatag : "Compressor-2015:CompressionRatio"

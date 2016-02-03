@@ -2,10 +2,10 @@ var express = require('express');
 var auth = require('./auth.js');
 var path = require('path');
 var router = express.Router();
+var app = express();
 
 router.use(function(req,res,next){
   console.log('check for token valid? ' +auth.hasValidSession(req) );
-
   if (auth.hasValidSession(req)) {
       next();
   } else {
@@ -18,6 +18,5 @@ router.get('/', function(req, res, next) {
   //console.log('Accessing the secure section ...'+path.join(__dirname + '/secure.html'))
   res.sendFile(path.join(__dirname + '/../public/secure.html'));
 });
-
 
 module.exports = router;
