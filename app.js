@@ -135,7 +135,6 @@ var apiProxyOptions = {
 	onProxyReq: function onProxyReq(proxyReq, req, res) {
 		req.headers['Authorization'] = auth.getUserToken(req);
 		req.headers['Content-Type'] = 'application/json';
-		req.headers['Predix-Zone-Id'] = 'd48832e0-069d-4850-b483-29250c65a5df';
 		//console.log('Request headers: ' + JSON.stringify(req.headers));
 	}
 };
