@@ -39,6 +39,7 @@ DEBUG=express:* npm start
 ## Running in the cloud
 
 Set up the manifest file for Cloud deployment
+
 1. Copy manifest.yml.template to my-app-manifest.yml.
 2. Edit the my-app-manifest.yml
   1. Replace ${UAA_service_instance} to the service instance name on the cloud foundry for predix UAA.
