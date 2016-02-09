@@ -3,7 +3,7 @@ Predix Development Kit Security Starter NodeJs Application
 
 This is simple starter Node application that demonstrates user authentication with Predix UAA.
 
-Refer to the pdk-security-starter to configure the UAA client.
+Refer to the predix-nodejs-starter to configure the UAA client.
 
 ## Running locally
 Edit the config.json to run locally for your UAA client.
@@ -14,7 +14,10 @@ Sample :
   "clientId": "${clientId}",
   "serverUrl" : "${UAA URL}",
   "base64ClientCredential": "${base 64 encoding of clientId:secret}",
-  "appUrl": "http://localhost:3000"
+  "appUrl": "http://localhost:3000",
+  "windServiceUrl": "URL to the microservice",
+  "windServiceYearlyApi" :"/services/windservices/yearly_data/sensor_id/",
+  "winddatatag":"Compressor-2015:CompressionRatio"
 }
 ```
 *Note:* You can encode your clientId:secret combination using <https://www.base64encode.org/> or the base64 command on Unix / Mac OSX.
@@ -41,5 +44,6 @@ Set up the manifest file for Cloud deployment
   1. Replace ${UAA_service_instance} to the service instance name on the cloud foundry for predix UAA.
   2. Replace ${clientId} to the clientId configured on the UAA
   3. Replace ${base64ClientCredential} is the base 64 encoding of clientId:secret
+  4. If integrating with Time series, then set the windServiceUrl to the URL of the deployed microservice
 
 `cf push <appName> -f my-app-manifest.yml`
