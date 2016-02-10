@@ -7,7 +7,6 @@ applications:
   command:  node app.js
 services:
   - {Put UAA service instance name here}
-  - {Put TS service instance name here}
 env:
     node_env: cloud
     uaa_service_label : predix-uaa

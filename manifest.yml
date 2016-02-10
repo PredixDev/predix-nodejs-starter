@@ -5,8 +5,8 @@ applications:
   buildpack: nodejs_buildpack
   #command:  DEBUG=express:* node app.js
   command:  node app.js
-services:
-  - {Put UAA service instance name here}
+#services:
+#  - <yourname>-secure-uaa-instance
 env:
     node_env: cloud
     uaa_service_label : predix-uaa

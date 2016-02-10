@@ -125,24 +125,26 @@ app.get('/favicon.ico', function (req, res) {
 //Setting up the proxy for calling the windService microservice from the client
 //Since the headers needs to be modified with Authorization header
 //and content-type
-var corporateProxyServer = process.env.http_proxy || process.env.HTTP_PROXY;
-var apiProxyContext = '/api';
-var apiProxyOptions = {
-	target:windServiceUrl,
-	changeOrigin:true,
-	logLevel: 'debug',
-	pathRewrite: { '^/api/services/windservices/yearly_data/': windServiceYearlyApi+winddatatag},
-	onProxyReq: function onProxyReq(proxyReq, req, res) {
-		req.headers['Authorization'] = auth.getUserToken(req);
-		req.headers['Content-Type'] = 'application/json';
-		//console.log('Request headers: ' + JSON.stringify(req.headers));
+if(windServiceUrl) {
+	var corporateProxyServer = process.env.http_proxy || process.env.HTTP_PROXY;
+	var apiProxyContext = '/api';
+	var apiProxyOptions = {
+		target:windServiceUrl,
+		changeOrigin:true,
+		logLevel: 'debug',
+		pathRewrite: { '^/api/services/windservices/yearly_data/': windServiceYearlyApi+winddatatag},
+		onProxyReq: function onProxyReq(proxyReq, req, res) {
+			req.headers['Authorization'] = auth.getUserToken(req);
+			req.headers['Content-Type'] = 'application/json';
+			//console.log('Request headers: ' + JSON.stringify(req.headers));
+		}
+	};
+	if (corporateProxyServer) {
+		apiProxyOptions.agent = new HttpsProxyAgent(corporateProxyServer);
 	}
-};
-if (corporateProxyServer) {
-	apiProxyOptions.agent = new HttpsProxyAgent(corporateProxyServer);
-}
 
-app.use(proxyMiddleware(apiProxyContext,apiProxyOptions));
+	app.use(proxyMiddleware(apiProxyContext,apiProxyOptions));
+}
 
 app.use(express.static(path.join(__dirname, 'public')));
 
