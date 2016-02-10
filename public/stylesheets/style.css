@@ -14,6 +14,7 @@ a {
 h2 {
   font-weight: 300;
   font-size: 40px;
+  margin: 15px 0;
 }
 
 h4 {
@@ -23,12 +24,25 @@ h4 {
 
 .header {
   color: #ffffff;
-  background: #00A800;
+  background-image: url('/images/banner-dark.png');
+  background-repeat: no-repeat;
+  background-size: cover;
   padding: 20px;
+  width: 100%;
 }
 
 .container {
   padding: 20px;
+  min-height: 200px;
+}
+
+.footer {
+  text-align: right;
+}
+
+.footer-logo {
+  height: 30px;
+  padding-right: 50px;
 }
 
 li {
