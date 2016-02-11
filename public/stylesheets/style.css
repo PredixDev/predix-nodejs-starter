@@ -37,12 +37,19 @@ h4 {
 }
 
 .footer {
-  text-align: right;
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+}
+
+.footer-logo-container {
+  position: relative;
 }
 
 .footer-logo {
   height: 30px;
-  padding-right: 50px;
+  padding: 20px;
+  float: right;
 }
 
 li {
