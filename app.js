@@ -40,7 +40,7 @@ if(node_env == 'development') {
 	var devConfig = environmentVars[node_env];
 	//console.log(devConfig);
 	clientId = devConfig.clientId;
-	uaaUri = devConfig.serverUrl;
+	uaaUri = devConfig.uaaUri;
 	base64ClientCredential  = devConfig.base64ClientCredential;
 	applicationUrl = devConfig.appUrl;
 	windServiceUrl = devConfig.windServiceUrl;
