@@ -2,25 +2,25 @@
   This function is called on the submit button of Get timeseries data to fetch
   data from WindServices.
   **/
-  function onclick_WindyService_Yearly() {
+  function onclick_WindService_Yearly() {
     var request = new XMLHttpRequest();
     request.open('GET', '/api/services/windservices/yearly_data/', true);
     request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
       var data = JSON.parse(request.responseText);
-      document.getElementById("windyService_yearly").innerHTML = "Data for tag :"+data.tags[0].name;
+      document.getElementById("windService_yearly").innerHTML = "Data for tag :"+data.tags[0].name;
       //parseTSdailyResponse(data);
       constructChartResponse(data);
       //var str = JSON.stringify(request.responseText, null, 2);
       //console.log('data is '+str);
 
     } else {
-      document.getElementById("windyService_yearly").innerHTML = "Error getting data for tags";
+      document.getElementById("windService_yearly").innerHTML = "Error getting data for tags";
 
     }
   };
   request.onerror = function() {
-    document.getElementById("windyService_yearly").innerHTML = "Error getting data for tags";
+    document.getElementById("windService_yearly").innerHTML = "Error getting data for tags";
   };
   request.send();
   }
@@ -34,7 +34,7 @@ function parseTSdailyResponse(data) {
       out+= '<div id="'+datapoints[i][0]+'">Time ='+datapoints[i][0]+' Value ='+datapoints[i][1]+'</div>';
   }
   //console.log(out);
-  document.getElementById("windyService_yearly_response").innerHTML = out;
+  document.getElementById("windService_yearly_response").innerHTML = out;
 }
 /*
 var for month
