@@ -13,6 +13,6 @@ env:
     #clientId: {Get client ID and place it here}
     #base64ClientCredential: {Get clientID:clientSecret then base64 encode and place it here}
     # Following properties configured only for Timeseries WindData service Integration
-    #windServiceUrl: {URL of the microservice}
+    #windServiceUrl: {URL of the microservice <your-name>-winddata-timeseries-service}, e.g.  http://your-name-winddata-timeseries-service.run.asw-usw02-pr.predix.io”
     windServiceYearlyApi : /services/windservices/yearly_data/sensor_id/
     winddatatag : "Compressor-2015:CompressionRatio"
