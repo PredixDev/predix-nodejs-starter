@@ -6,7 +6,7 @@ This is simple starter Node application that demonstrates user authentication wi
 Refer to the predix-nodejs-starter to configure the UAA client.
 
 ## Running locally
-Edit the config.json to run locally for your UAA client.
+Edit the config.json to run the application locally for your UAA client.
 
 Sample :
 ```
