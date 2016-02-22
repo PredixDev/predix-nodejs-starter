@@ -32,8 +32,13 @@
   function onclick_machineServiceData() {
     var request = new XMLHttpRequest();
     var tagString = getTagsSelectedValue();
+    var starttime = getStartTimeSelectedValue();
+    var datapointsUrl = "/api/services/windservices/yearly_data/sensor_id/"+tagString;
+    if(starttime) {
+      datapointsUrl = datapointsUrl + "?starttime="+starttime;
+    }
     console.log(tagString);
-    request.open('GET', '/api/services/windservices/yearly_data/sensor_id/'+tagString, true);
+    request.open('GET', datapointsUrl, true);
     request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
       var data = JSON.parse(request.responseText);
@@ -71,6 +76,24 @@ function getTagsSelectedValue()
   }
   return tagString;
 }
+
+/**Fetching the selected tags
+**/
+function getStartTimeSelectedValue()
+{
+  var startTime;
+
+  var startTimeList = document.getElementById('start-time');
+  for (var stCount = 0; stCount < startTimeList.options.length; stCount++) {
+     if(startTimeList.options[stCount].selected === true){
+          console.log("Selected value is "+startTimeList.options[stCount].value);
+          startTime = startTimeList.options[stCount].value ;
+          return startTime
+      }
+  }
+  return startTime;
+}
+
 
   /**
   Method to draw chart

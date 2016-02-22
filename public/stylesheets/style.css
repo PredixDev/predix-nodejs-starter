@@ -74,3 +74,8 @@ li {
     font-size: 16px;
     border-radius: 8px;
 }
+.start-time{
+  font-size:15px;
+  text-indent:-1.5px;
+  padding-left:2.5px;
+}
