@@ -15,9 +15,7 @@ Sample :
   "serverUrl" : "${UAA URL}",
   "base64ClientCredential": "${base 64 encoding of clientId:secret}",
   "appUrl": "http://localhost:3000",
-  "windServiceUrl": "URL to the microservice",
-  "windServiceYearlyApi" :"/services/windservices/yearly_data/sensor_id/",
-  "winddatatag":"Compressor-2015:CompressionRatio"
+  "windServiceUrl": "URL to the microservice"
 }
 ```
 *Note:* You can encode your clientId:secret combination using <https://www.base64encode.org/> or the base64 command on Unix / Mac OSX.

@@ -6,7 +6,7 @@
   <script src="../scripts/Chart.js"></script>
   <script src="../scripts/Timeseries.js"></script>
 </head>
-<body>
+<body onload="configureTimeseriesData();">
   <div class="header">
     <h2>My First Predix Sample Application</h2>
     <h4>Predix Developer Kit</h4>
@@ -23,9 +23,27 @@
         <a href="/logout">Logout</a>
       </li>
     </ul>
-<!--  <h2>Wind Data Microservices Integration</h2>
-    <div class="timeseries_container_button">
-    <p>Click Button to fetch data from ** WindServices ** backend microservice!!</p>
+<h2>Wind Data Microservices Integration</h2>
+<div class="timeseries_machine_container_button">
+  <p> Select the tags and submit the request load data in the chart.</p>
+  <select multiple id="tagList" class='tag-multiple'>
+  </select>
+</div>
+<br/>
+<div class="timeseries_machine_container_button">
+  <button type="button" onclick="onclick_machineServiceData();" class='timeseries_button'>Submit</button>
+  </div>
+    <p id="windService_machine_yearly"></p>
+    <div style="width:70%">
+      <div>
+        <h2 id='line_chart_info'></h2>
+        <p id="windService_machine_tags"></p>
+        <canvas id="machine_canvas" height="600" width="1000"></canvas>
+      </div>
+    </div>
+  </div>
+<!--  <div class="timeseries_container_button">
+    <p>Click Button to fetch single tag data from ** WindServices ** backend microservice!!</p>
     <button type="button" onclick="onclick_WindService_Yearly();">TimeSeries Yearly Data</button>
     </div>
       <p id="windService_yearly"></p>
@@ -34,8 +52,8 @@
             <p>Line Chart</p>
   				<canvas id="canvas" height="600" width="1000"></canvas>
   			</div>
-      </div>-->
-    </div>
+      </div>
+    </div> -->
     <div class="footer">
       <div class="footer-logo-container">
         <img class="footer-logo" src="/images/monogram-wdmk.png"></img>

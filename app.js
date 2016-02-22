@@ -30,8 +30,7 @@ var uaaUri = '';
 var applicationUrl = '';
 var base64ClientCredential = '';
 var windServiceUrl = '';
-var winddatatag = '';
-var windServiceYearlyApi = '';
+
 
 // checking NODE_ENV to load cloud properties from VCAPS
 // or development properties from config.json
@@ -44,15 +43,13 @@ if(node_env == 'development') {
 	base64ClientCredential  = devConfig.base64ClientCredential;
 	applicationUrl = devConfig.appUrl;
 	windServiceUrl = devConfig.windServiceUrl;
-	winddatatag = devConfig.winddatatag;
-	windServiceYearlyApi = devConfig.windServiceYearlyApi;
+
 } else {
 	// read VCAP_SERVICES
 	var vcapsServices = JSON.parse(process.env.VCAP_SERVICES);
 	var uaaService = vcapsServices[process.env.uaa_service_label];
 	windServiceUrl = process.env.windServiceUrl;
-	winddatatag = process.env.winddatatag;
-	windServiceYearlyApi = process.env.windServiceYearlyApi;
+
 	var uaaUri = '';
 
 	if(uaaService) {
@@ -89,8 +86,6 @@ if(node_env == 'development') {
 		console.log('uaaConfig.callbackUrl = ' +uaaConfig.callbackUrl );
 		console.log('uaaConfig.appUrl = ' +uaaConfig.appUrl );
 		console.log('windServiceUrl = ' +windServiceUrl );
-		console.log('windServiceYearlyApi = ' +windServiceYearlyApi );
-		console.log('winddatatag = ' +winddatatag );
 		console.log('*******************************');
 
 
@@ -132,7 +127,7 @@ if(windServiceUrl) {
 		target:windServiceUrl,
 		changeOrigin:true,
 		logLevel: 'debug',
-		pathRewrite: { '^/api/services/windservices/yearly_data/': windServiceYearlyApi+winddatatag},
+		pathRewrite: { '^/api/services/windservices': '/services/windservices'},
 		onProxyReq: function onProxyReq(proxyReq, req, res) {
 			req.headers['Authorization'] = auth.getUserToken(req);
 			req.headers['Content-Type'] = 'application/json';
