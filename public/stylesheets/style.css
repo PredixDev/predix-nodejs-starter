@@ -61,6 +61,8 @@ li {
   font-size:15px;
   text-indent:-1.5px;
   padding-left:2.5px;
+  height: 100%;
+  min-height: 200px;
 }
 
 .timeseries_button {
@@ -74,8 +76,18 @@ li {
     font-size: 16px;
     border-radius: 8px;
 }
+
 .start-time{
   font-size:15px;
   text-indent:-1.5px;
   padding-left:2.5px;
+}
+
+.windyservice_chart_div{
+  display: inline-block;
+}
+
+canvas{
+  height:500px;
+  width:400px;
 }
