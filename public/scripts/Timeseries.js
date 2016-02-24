@@ -3,7 +3,6 @@
   data from WindServices.
   **/
   function onclick_machineServiceData() {
-    alert("in here");
     var request = new XMLHttpRequest();
     var tagString = getTagsSelectedValue();
     var starttime = getStartTimeSelectedValue();
@@ -31,7 +30,7 @@
   };
   request.send();
   }
-  
+
   /**
   **/
   document.addEventListener("DOMContentLoaded", function(event) {
