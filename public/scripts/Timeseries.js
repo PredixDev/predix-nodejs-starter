@@ -80,7 +80,8 @@ function getStartTimeSelectedValue()
     for(i = 0; i < data.tags.length; i++) {
   var divTag = document.createElement('div');
       divTag.id="windService_machine_div_"+i;
-      divTag.class="windyservice_chart_div";
+      divTag.setAttribute("class", "windyservice_chart_div");
+
       add_machine_canvas.appendChild(divTag);
 
       var add_machine_div = document.getElementById('windService_machine_div_'+i);
@@ -93,6 +94,7 @@ function getStartTimeSelectedValue()
 
       var canvas = document.createElement('canvas');
       canvas.id="machine_canvas_"+i;
+      canvas.setAttribute("class", "windyservice_chart_canvas");
       add_machine_div.appendChild(canvas);
 
       var ctx = document.getElementById(canvas.id).getContext("2d");

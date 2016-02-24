@@ -75,6 +75,7 @@ li {
     display: inline-block;
     font-size: 16px;
     border-radius: 8px;
+    cursor:pointer;
 }
 
 .start-time{
@@ -87,7 +88,7 @@ li {
   display: inline-block;
 }
 
-canvas{
+.windyservice_chart_canvas{
   height:500px;
   width:400px;
 }
