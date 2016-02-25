@@ -9,8 +9,6 @@
     setInterval(updateChart,4000);
   }
 
-
-
   /**
   **/
   function getMachineServiceData() {
@@ -129,8 +127,7 @@ function getStartTimeSelectedValue()
       request.onload = function() {
       if (request.status >= 200 && request.status < 400) {
         var data = JSON.parse(request.responseText);
-        document.getElementById("line_chart_info").innerHTML = 'Chart for Tags';
-        var str = JSON.stringify(request.responseText, null, 2);
+    //    var str = JSON.stringify(request.responseText, null, 2);
         //console.log('updated data is '+str);
         for(i = 0; i < data.tags.length; i++) {
           var datapoints = data.tags[i].results[0].values;
