@@ -2,23 +2,35 @@
   This function is called on the submit button of Get timeseries data to fetch
   data from WindServices.
   **/
+  var lineChartMap ;
+
   function onclick_machineServiceData() {
+     lineChartMap = getMachineServiceData();
+    setInterval(updateChart,4000);
+  }
+
+
+
+  /**
+  **/
+  function getMachineServiceData() {
     var request = new XMLHttpRequest();
     var tagString = getTagsSelectedValue();
     var starttime = getStartTimeSelectedValue();
-    var datapointsUrl = "/api/services/windservices/yearly_data/sensor_id/"+tagString;
+    var datapointsUrl = "/api/services/windservices/yearly_data/sensor_id/"+tagString+"?order=asc";
     if(starttime) {
-      datapointsUrl = datapointsUrl + "?starttime="+starttime;
+      datapointsUrl = datapointsUrl + "&starttime="+starttime;
     }
-    console.log(tagString);
+    //console.log(tagString);
     request.open('GET', datapointsUrl, true);
     request.onload = function() {
     if (request.status >= 200 && request.status < 400) {
       var data = JSON.parse(request.responseText);
       document.getElementById("line_chart_info").innerHTML = 'Chart for Tags';
       var str = JSON.stringify(request.responseText, null, 2);
-      console.log('data is '+str);
-      constructMachineChartResponse(data);
+      //console.log('data is '+str);
+      lineChartMap = constructMachineChartResponse(data);
+      return lineChartMap;
 
     } else {
       document.getElementById("windService_machine_yearly").innerHTML = "Error getting data for tags";
@@ -29,14 +41,8 @@
     document.getElementById("windService_machine_yearly").innerHTML = "Error getting data for tags";
   };
   request.send();
+
   }
-
-  /**
-  **/
-  document.addEventListener("DOMContentLoaded", function(event) {
-    document.getElementById("timeseries_button").addEventListener("click", onclick_machineServiceData);
-  });
-
 
 /**Fetching the selected tags
 **/
@@ -46,9 +52,9 @@ function getTagsSelectedValue()
   var tagAppender = "";
   var tagList = document.getElementById('tagList');
   for (var tagCount = 0; tagCount < tagList.options.length; tagCount++) {
-    console.log(tagList.options[tagCount].value);
+    //console.log(tagList.options[tagCount].value);
      if(tagList.options[tagCount].selected === true){
-          console.log("Selected value is "+tagList.options[tagCount].value);
+          //console.log("Selected value is "+tagList.options[tagCount].value);
           tagString = tagString+tagAppender+tagList.options[tagCount].value ;
           tagAppender = ",";
       }
@@ -65,7 +71,7 @@ function getStartTimeSelectedValue()
   var startTimeList = document.getElementById('start-time');
   for (var stCount = 0; stCount < startTimeList.options.length; stCount++) {
      if(startTimeList.options[stCount].selected === true){
-          console.log("Selected value is "+startTimeList.options[stCount].value);
+          //console.log("Selected value is "+startTimeList.options[stCount].value);
           startTime = startTimeList.options[stCount].value ;
           return startTime;
       }
@@ -78,14 +84,14 @@ function getStartTimeSelectedValue()
   Method to draw chart as per tags and construct html for same
   **/
   function constructMachineChartResponse(data) {
-
+    var lineChartMap = new Map();
     // remove exisitn elements -reset
     document.getElementById('add_machine_canvas').innerHTML = "";
     // get the base element
     var  add_machine_canvas = document.getElementById('add_machine_canvas');
 
     for(i = 0; i < data.tags.length; i++) {
-  var divTag = document.createElement('div');
+      var divTag = document.createElement('div');
       divTag.id="windService_machine_div_"+i;
       divTag.setAttribute("class", "windyservice_chart_div");
 
@@ -105,10 +111,44 @@ function getStartTimeSelectedValue()
       add_machine_div.appendChild(canvas);
 
       var ctx = document.getElementById(canvas.id).getContext("2d");
-      window.myLine = new Chart(ctx).Line(getMachineLineChartData_each(data.tags[i]), {
+      var lineChartDemo = new Chart(ctx).Line(getMachineLineChartData_each(data.tags[i]), {
           responsive: true
         });
+        lineChartMap.set(data.tags[i].name,lineChartDemo);
+
       }
+      return lineChartMap;
+  }
+
+  function updateChart() {
+      var tagString = getTagsSelectedValue();
+      var request = new XMLHttpRequest();
+      var datapointsUrl = "/api/services/windservices/yearly_data/sensor_id/"+tagString+"?order=asc&starttime=5s-ago";
+      //console.log(datapointsUrl);
+      request.open('GET', datapointsUrl, true);
+      request.onload = function() {
+      if (request.status >= 200 && request.status < 400) {
+        var data = JSON.parse(request.responseText);
+        document.getElementById("line_chart_info").innerHTML = 'Chart for Tags';
+        var str = JSON.stringify(request.responseText, null, 2);
+        //console.log('updated data is '+str);
+        for(i = 0; i < data.tags.length; i++) {
+          var datapoints = data.tags[i].results[0].values;
+          for(j = 0; j < datapoints.length; j++) {
+            lineChartDemo = lineChartMap.get(data.tags[i].name);
+            lineChartDemo.removeData();
+            var d = new Date(datapoints[j][0]);
+            var formatDate = monthNames[d.getMonth()]+'-'+d.getFullYear()+' '+d.getHours()+':'+d.getSeconds()+" "+d.getMilliseconds();
+            lineChartDemo.addData([datapoints[j][1]],formatDate);
+          }
+        }
+      }
+    };
+    request.onerror = function() {
+      document.getElementById("windService_machine_yearly").innerHTML = "Error getting data for tags";
+    };
+    request.send();
+
   }
 
   /*
@@ -130,19 +170,15 @@ function getStartTimeSelectedValue()
           labels : [0],
           datasets : [dataset]
     };
-
-      console.log("getting data for tag"+tag.name);
-      var datapoints = tag.results[0].values;
-      console.log("Results are "+datapoints);
-      var dataPointMap =  new Map();
-      for(j = 0; j < datapoints.length; j++) {
-        var d = new Date(datapoints[j][0]);
-        var formatDate = monthNames[d.getMonth()]+'-'+d.getFullYear()+' '+d.getHours()+':'+d.getSeconds()+" "+d.getMilliseconds();
-        //chartLabels.push(formatDate);
-        lineChartData.labels.push(formatDate);
-        lineChartData.datasets[0].data.push(datapoints[j][1]);
-      }
-
+    var datapoints = tag.results[0].values;
+    var dataPointMap =  new Map();
+    for(j = 0; j < datapoints.length; j++) {
+      var d = new Date(datapoints[j][0]);
+      var formatDate = monthNames[d.getMonth()]+'-'+d.getFullYear()+' '+d.getHours()+':'+d.getSeconds()+" "+d.getMilliseconds();
+      //chartLabels.push(formatDate);
+      lineChartData.labels.push(formatDate);
+      lineChartData.datasets[0].data.push(datapoints[j][1]);
+    }
     return lineChartData;
 
   }
@@ -154,7 +190,7 @@ function configureTagsTimeseriesData (){
   request.onload = function() {
   if (request.status >= 200 && request.status < 400) {
     var data = JSON.parse(request.responseText);
-    console.log('tags response is '+JSON.stringify(request.responseText, null, 2));
+    //console.log('tags response is '+JSON.stringify(request.responseText, null, 2));
     select = document.getElementById('tagList');
     for(tagCount = 0; tagCount < data.results.length; tagCount++) {
     var opt = document.createElement('option');
