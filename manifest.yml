@@ -1,12 +1,12 @@
 ---
 applications:
-- name: {your-name-here}-predix-nodejs-starter
+- name: {Put your app name here}
   memory: 128M
   buildpack: nodejs_buildpack
   #command:  DEBUG=express:* node app.js
   command:  node app.js
 #services:
-#  - <yourname>-secure-uaa-instance
+ # - {Put UAA service instance name here}
 env:
     node_env: cloud
     uaa_service_label : predix-uaa
@@ -14,5 +14,3 @@ env:
     #base64ClientCredential: {Get clientID:clientSecret then base64 encode and place it here}
     # Following properties configured only for Timeseries WindData service Integration
     #windServiceUrl: "{URL of the microservice <your-name>-winddata-timeseries-service}, e.g.  http://your-name-winddata-timeseries-service.run.asw-usw02-pr.predix.io"
-    windServiceYearlyApi : /services/windservices/yearly_data/sensor_id/
-    winddatatag : "Compressor-2015:CompressionRatio"
