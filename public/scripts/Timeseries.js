@@ -121,7 +121,7 @@ function getStartTimeSelectedValue()
   function updateChart() {
       var tagString = getTagsSelectedValue();
       var request = new XMLHttpRequest();
-      var datapointsUrl = "/api/services/windservices/yearly_data/sensor_id/"+tagString+"?order=asc&starttime=5s-ago";
+      var datapointsUrl = "/api/services/windservices/yearly_data/sensor_id/"+tagString+"?order=asc&starttime=7s-ago";
       //console.log(datapointsUrl);
       request.open('GET', datapointsUrl, true);
       request.onload = function() {
@@ -134,7 +134,7 @@ function getStartTimeSelectedValue()
           for(j = 0; j < datapoints.length; j++) {
             lineChartDemo = lineChartMap.get(data.tags[i].name);
             var d = new Date(datapoints[j][0]);
-            var formatDate = monthNames[d.getMonth()]+'-'+d.getFullYear()+' '+d.getHours()+' '+getMinutes()+':'+d.getSeconds()+" "+d.getMilliseconds();
+            var formatDate = monthNames[d.getMonth()]+'-'+d.getFullYear()+' '+d.getHours()+' '+d.getMinutes()+':'+d.getSeconds()+" "+d.getMilliseconds();
             lineChartDemo.addData([datapoints[j][1]],formatDate);
             lineChartDemo.removeData();
           }
