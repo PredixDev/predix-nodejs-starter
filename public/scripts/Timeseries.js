@@ -133,10 +133,10 @@ function getStartTimeSelectedValue()
           var datapoints = data.tags[i].results[0].values;
           for(j = 0; j < datapoints.length; j++) {
             lineChartDemo = lineChartMap.get(data.tags[i].name);
-            lineChartDemo.removeData();
             var d = new Date(datapoints[j][0]);
             var formatDate = monthNames[d.getMonth()]+'-'+d.getFullYear()+' '+d.getHours()+' '+getMinutes()+':'+d.getSeconds()+" "+d.getMilliseconds();
             lineChartDemo.addData([datapoints[j][1]],formatDate);
+            lineChartDemo.removeData();
           }
         }
       }
