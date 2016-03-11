@@ -5,7 +5,7 @@
   var lineChartMap ;
 
   function onclick_machineServiceData() {
-     lineChartMap = getMachineServiceData();
+    lineChartMap = getMachineServiceData();
     setInterval(updateChart,4000);
   }
 
@@ -176,11 +176,10 @@ function getStartTimeSelectedValue()
       lineChartData.labels.push(formatDate);
       lineChartData.datasets[0].data.push(datapoints[j][1]);
     }
+    document.getElementById('windService_machine_yearly').scrollIntoView();
     return lineChartData;
-
   }
-/**
-**/
+
 function configureTagsTimeseriesData (){
   var request = new XMLHttpRequest();
   request.open('GET', '/api/services/windservices/tags', true);
