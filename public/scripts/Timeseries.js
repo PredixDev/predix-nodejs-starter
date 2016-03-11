@@ -189,14 +189,16 @@ function configureTagsTimeseriesData (){
     var data = JSON.parse(request.responseText);
     //console.log('tags response is '+JSON.stringify(request.responseText, null, 2));
     select = document.getElementById('tagList');
-    for(tagCount = 0; tagCount < data.results.length; tagCount++) {
-    var opt = document.createElement('option');
-    opt.value = data.results[tagCount];
-    if(tagCount === 0) {
-      opt.selected = "selected";
+    if (select) {
+      for(tagCount = 0; tagCount < data.results.length; tagCount++) {
+      var opt = document.createElement('option');
+      opt.value = data.results[tagCount];
+      if(tagCount === 0) {
+        opt.selected = "selected";
+      }
+      opt.innerHTML = data.results[tagCount];
+      select.appendChild(opt);
     }
-    opt.innerHTML = data.results[tagCount];
-    select.appendChild(opt);
   }
 
 
