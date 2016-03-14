@@ -121,7 +121,7 @@ function getStartTimeSelectedValue()
   function updateChart() {
       var tagString = getTagsSelectedValue();
       var request = new XMLHttpRequest();
-      var datapointsUrl = "/api/services/windservices/yearly_data/sensor_id/"+tagString+"?order=asc&starttime=7s-ago";
+      var datapointsUrl = "/api/services/windservices/yearly_data/sensor_id/"+tagString+"?order=asc&starttime=5mi-ago";
       //console.log(datapointsUrl);
       request.open('GET', datapointsUrl, true);
       request.onload = function() {
