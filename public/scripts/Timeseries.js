@@ -134,7 +134,7 @@ function getStartTimeSelectedValue()
           for(j = 0; j < datapoints.length; j++) {
             lineChartDemo = lineChartMap.get(data.tags[i].name);
             var d = new Date(datapoints[j][0]);
-            var formatDate = monthNames[d.getMonth()]+'-'+d.getFullYear()+' '+d.getHours()+' '+d.getMinutes()+':'+d.getSeconds()+" "+d.getMilliseconds();
+            var formatDate = monthNames[d.getMonth()]+'-'+d.getFullYear()+'-'+d.getDate()+' '+d.getHours()+' '+d.getMinutes()+':'+d.getSeconds()+" "+d.getMilliseconds();
             lineChartDemo.addData([datapoints[j][1]],formatDate);
             lineChartDemo.removeData();
           }
@@ -171,7 +171,7 @@ function getStartTimeSelectedValue()
     var dataPointMap =  new Map();
     for(j = 0; j < datapoints.length; j++) {
       var d = new Date(datapoints[j][0]);
-      var formatDate = monthNames[d.getMonth()]+'-'+d.getFullYear()+' '+d.getHours()+' '+d.getMinutes()+':'+d.getSeconds()+" "+d.getMilliseconds();
+      var formatDate = monthNames[d.getMonth()]+'-'+d.getFullYear()+'-'+d.getDate()+' '+d.getHours()+' '+d.getMinutes()+':'+d.getSeconds()+" "+d.getMilliseconds();
       //chartLabels.push(formatDate);
       lineChartData.labels.push(formatDate);
       lineChartData.datasets[0].data.push(datapoints[j][1]);
