@@ -6,7 +6,7 @@ applications:
   #command:  DEBUG=express:* node app.js
   command:  node app.js
 #services:
- # - <your-name>-secure-uaa-instance Change
+ # - <your-name>-secure-uaa-instance
 env:
     node_env: cloud
     uaa_service_label : predix-uaa
