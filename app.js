@@ -43,6 +43,12 @@ if(node_env == 'development') {
 	base64ClientCredential  = devConfig.base64ClientCredential;
 	applicationUrl = devConfig.appUrl;
 	windServiceUrl = devConfig.windServiceUrl;
+	uaaURL = devConfig.uaaURL;
+  timeseriesURL = devConfig.timeseriesURL;
+  timeseriesBase64ClientCredentials = devConfig.timeseriesBase64ClientCredentials;
+  timeseries_zone = devConfig.timeseries_zone;
+  assetURL = devConfig.assetURL;
+  tagname = devConfig.tagname;
 
 } else {
 	// read VCAP_SERVICES
@@ -64,6 +70,12 @@ if(node_env == 'development') {
 	// read env properties
 	clientId = process.env.clientId;
 	base64ClientCredential = process.env.base64ClientCredential;
+	uaaURL = process.env.uaaURL;
+  timeseriesURL = process.env.timeseriesURL;
+  timeseriesBase64ClientCredentials = process.env.timeseriesBase64ClientCredentials;
+  timeseries_zone = process.env.timeseries_zone;
+  assetURL = process.env.assetURL;
+  tagname = process.env.tagname;
 
 }
 
