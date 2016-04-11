@@ -80,12 +80,12 @@ if(node_env == 'development') {
 	base64ClientCredential = process.env.base64ClientCredential;
 
 	// Raspberry PI env variables
-	assetTagname = devConfig.tagname;
-	assetURL = devConfig.assetURL;
-	timeseriesZone = devConfig.timeseries_zone;
-	timeseriesBase64ClientCredentials = devConfig.timeseriesBase64ClientCredentials;
-	timeseriesURL = devConfig.timeseriesURL;
-	uaaURL = devConfig.uaaURL;
+	assetTagname = process.env.tagname;
+	assetURL = process.env.assetURL;
+	timeseriesZone = process.env.timeseries_zone;
+	timeseriesBase64ClientCredentials = process.env.timeseriesBase64ClientCredentials;
+	timeseriesURL = process.env.timeseriesURL;
+	uaaURL = process.env.uaaURL;
 
 }
 
