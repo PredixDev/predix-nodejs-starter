@@ -1,3 +1,5 @@
+
+
   /**
   This function is called on the submit button of Get timeseries data to fetch
   data from WindServices.
@@ -181,6 +183,13 @@ function getStartTimeSelectedValue()
   }
 
 function configureTagsTimeseriesData (){
+
+  var raspberryPiConfig = getRaspberryPiConfig().then(function(response) {
+    return JSON.parse(response);
+  }, function(error) {
+    console.error("Failed when getting the RaspberryPi Configurations", error);
+  });
+
   var request = new XMLHttpRequest();
   request.open('GET', '/api/services/windservices/tags', true);
   request.onload = function() {
@@ -211,6 +220,24 @@ request.onerror = function() {
 };
 request.send();
 
+}
+
+function getRaspberryPiConfig() {
+  console.log("Making call to /secure/data to get raspberry pi configurations...");
+  return new Promise(function(resolve, reject) {
+    var request = new XMLHttpRequest();
+    request.open('GET', '/secure/data');
+    request.onload = function() {
+      if (request.status == 200) {
+        console.log('RasperryPi Config Data: '+ JSON.stringify(request.response, null, 2));
+        resolve(request.response);
+      }
+      else {
+        reject(Error(request.statusText));
+      }
+    };
+    request.send();
+  });
 }
 
 /*

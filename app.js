@@ -31,6 +31,13 @@ var applicationUrl = '';
 var base64ClientCredential = '';
 var windServiceUrl = '';
 
+// Raspberry PI env variables
+var assetTagname = '';
+var assetURL = '';
+var timeseriesZone = '';
+var timeseriesBase64ClientCredentials = '';
+var timeseriesURL = '';
+var uaaURL = '';
 
 // checking NODE_ENV to load cloud properties from VCAPS
 // or development properties from config.json
@@ -43,12 +50,13 @@ if(node_env == 'development') {
 	base64ClientCredential  = devConfig.base64ClientCredential;
 	applicationUrl = devConfig.appUrl;
 	windServiceUrl = devConfig.windServiceUrl;
+	// Raspberry PI env variables
+	assetTagname = devConfig.tagname;
+	assetURL = devConfig.assetURL;
+	timeseriesZone = devConfig.timeseries_zone;
+	timeseriesBase64ClientCredentials = devConfig.timeseriesBase64ClientCredentials;
+	timeseriesURL = devConfig.timeseriesURL;
 	uaaURL = devConfig.uaaURL;
-  timeseriesURL = devConfig.timeseriesURL;
-  timeseriesBase64ClientCredentials = devConfig.timeseriesBase64ClientCredentials;
-  timeseries_zone = devConfig.timeseries_zone;
-  assetURL = devConfig.assetURL;
-  tagname = devConfig.tagname;
 
 } else {
 	// read VCAP_SERVICES
@@ -70,12 +78,14 @@ if(node_env == 'development') {
 	// read env properties
 	clientId = process.env.clientId;
 	base64ClientCredential = process.env.base64ClientCredential;
-	uaaURL = process.env.uaaURL;
-  timeseriesURL = process.env.timeseriesURL;
-  timeseriesBase64ClientCredentials = process.env.timeseriesBase64ClientCredentials;
-  timeseries_zone = process.env.timeseries_zone;
-  assetURL = process.env.assetURL;
-  tagname = process.env.tagname;
+
+	// Raspberry PI env variables
+	assetTagname = devConfig.tagname;
+	assetURL = devConfig.assetURL;
+	timeseriesZone = devConfig.timeseries_zone;
+	timeseriesBase64ClientCredentials = devConfig.timeseriesBase64ClientCredentials;
+	timeseriesURL = devConfig.timeseriesURL;
+	uaaURL = devConfig.uaaURL;
 
 }
 
@@ -90,6 +100,15 @@ if(node_env == 'development') {
 			appUrl: applicationUrl
 		};
 
+	var raspberryPiConfig = {
+			assetTagname : assetTagname,
+			assetURL : assetURL,
+			timeseriesZone : timeseriesZone,
+			timeseriesBase64ClientCredentials : timeseriesBase64ClientCredentials,
+			timeseriesURL : timeseriesURL,
+			uaaURL : uaaURL
+		};
+
 		console.log('************'+node_env+'******************');
 		console.log('uaaConfig.clientId = ' +uaaConfig.clientId );
 		console.log('uaaConfig.serverUrl = ' +uaaConfig.serverUrl );
@@ -98,8 +117,13 @@ if(node_env == 'development') {
 		console.log('uaaConfig.callbackUrl = ' +uaaConfig.callbackUrl );
 		console.log('uaaConfig.appUrl = ' +uaaConfig.appUrl );
 		console.log('windServiceUrl = ' +windServiceUrl );
-		console.log('*******************************');
-
+		console.log('raspberryPiConfig.assetTagname = ' +uaaConfig.clientId );
+		console.log('raspberryPiConfig.assetURL = ' +uaaConfig.serverUrl );
+		console.log('raspberryPiConfig.timeseriesZone = ' +uaaConfig.defaultClientRoute );
+		console.log('raspberryPiConfig.timeseriesBase64ClientCredentials = ' +uaaConfig.base64ClientCredential );
+		console.log('raspberryPiConfig.timeseriesURL = ' +uaaConfig.callbackUrl );
+		console.log('raspberryPiConfig.uaaURL = ' +uaaConfig.appUrl );
+		console.log('***************************');
 
 
 
@@ -125,7 +149,10 @@ app.use(session({
 
 //Initializing auth.js modules with UAA configurations
 app.use(auth.init(uaaConfig));
-
+//Initializing secure.js modules with raspberryPi configurations
+app.use(secure.init(raspberryPiConfig));
+app.use(auth.init)
+app.use(secure.init)
 app.get('/favicon.ico', function (req, res) {
   res.send('favicon.ico');
 });

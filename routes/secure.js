@@ -19,4 +19,22 @@ router.get('/', function(req, res, next) {
   res.sendFile(path.join(__dirname + '/../public/secure.html'));
 });
 
-module.exports = router;
+/* GET Secure resource for data */
+router.get('/data', function(req, res, next) {
+  //console.log('Accessing the secure section ...'+path.join(__dirname + '/secure.html'))
+  res.json(module.exports.raspberryPiConfig);
+});
+
+module.exports = {
+  init: function (options) {
+    options = options ;
+    this.assetTagname = options.assetTagname;
+    this.assetURL = options.assetURL;
+    this.timeseriesZone = options.timeseriesZone;
+    this.timeseriesBase64ClientCredentials = options.timeseriesBase64ClientCredentials;
+    this.timeseriesURL = options.timeseriesURL;
+    this.uaaURL = options.uaaURL;
+  },
+  var raspberryPiConfig = this,
+  this.router
+};
