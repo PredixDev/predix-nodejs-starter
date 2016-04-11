@@ -34,7 +34,10 @@ module.exports = {
     this.timeseriesBase64ClientCredentials = options.timeseriesBase64ClientCredentials;
     this.timeseriesURL = options.timeseriesURL;
     this.uaaURL = options.uaaURL;
+    return this.getRaspberryPIConfig();
   },
-  var raspberryPiConfig = this,
-  this.router
+  getRaspberryPIConfig: function () {
+    var raspberryPiConfig = this;
+    return raspberryPiConfig;
+  }
 };
