@@ -8,7 +8,7 @@
 
   function onclick_machineServiceData() {
     lineChartMap = getMachineServiceData();
-    setInterval(updateChart,4000);
+    //setInterval(updateChart,4000);
   }
 
   /**
@@ -24,6 +24,9 @@
     var uaaRequest = new XMLHttpRequest();
     var auth = raspberryPiConfig.timeseriesBase64ClientCredentials
     var uaaParams = "grant_type=client_credentials&client_id=" + raspberryPiConfig.clientId
+    console.log("UAA URL GET: " + raspberryPiConfig.uaaURL + "?" + uaaParams);
+    console.log("UAA URL PARAMS: " + uaaParams);
+    console.log("UAA Authorization Header: Basic " + auth);
     uaaRequest.open('GET', raspberryPiConfig.uaaURL + "?" + uaaParams, true);
     uaaRequest.setRequestHeader("Authorization", "Basic " + auth);
 
@@ -37,7 +40,7 @@
       }
     };
     uaaRequest.send();
-    
+
     /*
     ironAjaxEl.url = config.uaaURL;
     ironAjaxEl.handleAs = "json";
@@ -231,9 +234,9 @@ function configureTagsTimeseriesData (){
   select = document.getElementById('tagList');
   if (select) {
     var opt = document.createElement('option');
-    opt.value = raspberryPiConfig.tagname;
+    opt.value = raspberryPiConfig.assetTagname;
     opt.selected = "selected";
-    opt.innerHTML = raspberryPiConfig.tagname;
+    opt.innerHTML = raspberryPiConfig.assetTagname;
     select.appendChild(opt);
   }
   else {
