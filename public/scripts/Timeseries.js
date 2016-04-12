@@ -6,6 +6,7 @@
   **/
   var lineChartMap ;
   var raspberryPiConfig = '';
+  var accessToken = '';
 
   function onclick_machineServiceData() {
     lineChartMap = getMachineServiceData();
@@ -23,15 +24,18 @@
         var uaaRequest = new XMLHttpRequest();
         var auth = raspberryPiConfig.timeseriesBase64ClientCredentials;
         var uaaParams = "grant_type=client_credentials&client_id=" + raspberryPiConfig.timeseriesClientId;
-        console.log("UAA URL GET: " + raspberryPiConfig.uaaURL + "oauth/token?" + uaaParams);
+        console.log("UAA URL GET: " + raspberryPiConfig.uaaURL + "/oauth/token?" + uaaParams);
         console.log("UAA URL PARAMS: " + uaaParams);
         console.log("UAA Authorization Header: Basic " + auth);
-        uaaRequest.open('GET', raspberryPiConfig.uaaURL + "oauth/token?" + uaaParams, true);
+        uaaRequest.open('GET', raspberryPiConfig.uaaURL + "/oauth/token?" + uaaParams, true);
         uaaRequest.setRequestHeader("Authorization", "Basic " + auth);
 
         uaaRequest.onreadystatechange = function() {
           if (uaaRequest.readyState == 4) {
-            console.log("Access Token: " + uaaRequest.responseText);
+            var res = JSON.parse(uaaRequest.responseText);
+            accessToken = res.token_type + ' ' + res.access_token;
+
+            console.log("Access Token: " + accessToken);
           }
           else
           {
