@@ -14,6 +14,45 @@
   /**
   **/
   function getMachineServiceData() {
+
+    var raspberryPiConfig = getRaspberryPiConfig().then(function(response) {
+      return JSON.parse(response);
+    }, function(error) {
+      console.error("Failed when getting the RaspberryPi Configurations", error);
+    });
+
+    var uaaRequest = new XMLHttpRequest();
+    var auth = raspberryPiConfig.timeseriesBase64ClientCredentials
+    var uaaParams = "grant_type=client_credentials&client_id=" + raspberryPiConfig.clientId
+    uaaRequest.open('GET', raspberryPiConfig.uaaURL + "?" + uaaParams, true);
+    uaaRequest.setRequestHeader("Authorization", "Basic " + auth);
+
+    uaaRequest.onreadystatechange = function() {
+      if (uaaRequest.readyState == 4) {
+        console.log("Access Token: " + uaaRequest.responseText);
+      }
+      else
+      {
+        console.log("No access token");
+      }
+    };
+    uaaRequest.send();
+    
+    /*
+    ironAjaxEl.url = config.uaaURL;
+    ironAjaxEl.handleAs = "json";
+    var auth = btoa( config.ts_client+":" +config.ts_secret)
+    ironAjaxEl.headers = {"Authorization": "Basic "+auth};
+    ironAjaxEl.params = {"grant_type":"client_credentials","client_id":config.ts_client};
+    ironAjaxEl.addEventListener('response', function(evt) {
+      if(evt.detail.response.access_token)
+        token = evt.detail.response.access_token;
+      else {
+        console.log("no token")
+        return;
+      }
+       */
+    /*
     var request = new XMLHttpRequest();
     var tagString = getTagsSelectedValue();
     var starttime = getStartTimeSelectedValue();
@@ -41,7 +80,7 @@
     document.getElementById("windService_machine_yearly").innerHTML = "Error getting data for tags";
   };
   request.send();
-
+*/
   }
 
 /**Fetching the selected tags
