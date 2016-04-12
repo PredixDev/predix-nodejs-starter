@@ -185,6 +185,7 @@ function getStartTimeSelectedValue()
 function configureTagsTimeseriesData (){
 
   var raspberryPiConfig = getRaspberryPiConfig().then(function(response) {
+    console.log(JSON.stringify(response));
     return JSON.parse(response);
   }, function(error) {
     console.error("Failed when getting the RaspberryPi Configurations", error);

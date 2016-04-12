@@ -21,10 +21,12 @@ router.get('/', function(req, res, next) {
 
 /* GET Secure resource for data */
 router.get('/data', function(req, res, next) {
-  //console.log('Accessing the secure section ...'+path.join(__dirname + '/secure.html'))
-  res.json(module.exports.raspberryPiConfig);
+  console.log('Accessing the secure section ...'+path.join(__dirname + '/secure.html'))
+  res.json(req.app.get('raspberryPiConfig'));
 });
 
+module.exports = router;
+/*
 module.exports = {
   init: function (options) {
     options = options ;
@@ -39,5 +41,7 @@ module.exports = {
   getRaspberryPIConfig: function () {
     var raspberryPiConfig = this;
     return raspberryPiConfig;
-  }
+  },
+  router
 };
+*/

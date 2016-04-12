@@ -91,7 +91,7 @@ if(node_env == 'development') {
 
 /* Setting the uaa Config used in the router auth.js*/
 
-	var uaaConfig = {
+		var uaaConfig = {
 			clientId: clientId,
 			serverUrl : uaaUri,
 	    defaultClientRoute : '/index.html',
@@ -100,7 +100,7 @@ if(node_env == 'development') {
 			appUrl: applicationUrl
 		};
 
-	var raspberryPiConfig = {
+		var raspberryPiConfig = {
 			assetTagname : assetTagname,
 			assetURL : assetURL,
 			timeseriesZone : timeseriesZone,
@@ -117,20 +117,23 @@ if(node_env == 'development') {
 		console.log('uaaConfig.callbackUrl = ' +uaaConfig.callbackUrl );
 		console.log('uaaConfig.appUrl = ' +uaaConfig.appUrl );
 		console.log('windServiceUrl = ' +windServiceUrl );
-		console.log('raspberryPiConfig.assetTagname = ' +uaaConfig.clientId );
-		console.log('raspberryPiConfig.assetURL = ' +uaaConfig.serverUrl );
-		console.log('raspberryPiConfig.timeseriesZone = ' +uaaConfig.defaultClientRoute );
-		console.log('raspberryPiConfig.timeseriesBase64ClientCredentials = ' +uaaConfig.base64ClientCredential );
-		console.log('raspberryPiConfig.timeseriesURL = ' +uaaConfig.callbackUrl );
-		console.log('raspberryPiConfig.uaaURL = ' +uaaConfig.appUrl );
+		console.log('raspberryPiConfig.assetTagname = ' +raspberryPiConfig.assetTagname );
+		console.log('raspberryPiConfig.assetURL = ' +raspberryPiConfig.assetURL );
+		console.log('raspberryPiConfig.timeseriesZone = ' +raspberryPiConfig.timeseriesZone );
+		console.log('raspberryPiConfig.timeseriesBase64ClientCredentials = ' +raspberryPiConfig.timeseriesBase64ClientCredentials );
+		console.log('raspberryPiConfig.timeseriesURL = ' +raspberryPiConfig.timeseriesURL );
+		console.log('raspberryPiConfig.uaaURL = ' +raspberryPiConfig.uaaURL );
 		console.log('***************************');
 
+		//app.configure(function() {
+			app.set('raspberryPiConfig', raspberryPiConfig);
+		//});
 
 
-var server = app.listen(config.express.port, function () {
-  var host = server.address().address;
-  var port = server.address().port;
-	console.log ('Server Started at ' + uaaConfig.appUrl);
+		var server = app.listen(config.express.port, function () {
+  	var host = server.address().address;
+  	var port = server.address().port;
+		console.log ('Server Started at ' + uaaConfig.appUrl);
 });
 
 //Initializing application modules
@@ -150,7 +153,7 @@ app.use(session({
 //Initializing auth.js modules with UAA configurations
 app.use(auth.init(uaaConfig));
 //Initializing secure.js modules with raspberryPi configurations
-app.use(secure.init(raspberryPiConfig));
+//app.use(secure.init(raspberryPiConfig));
 
 app.get('/favicon.ico', function (req, res) {
   res.send('favicon.ico');
