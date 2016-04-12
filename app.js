@@ -57,7 +57,7 @@ if(node_env == 'development') {
 	timeseriesBase64ClientCredentials = devConfig.timeseriesBase64ClientCredentials;
 	timeseriesURL = devConfig.timeseriesURL;
 	uaaURL = devConfig.uaaURL;
-	timeseriesClientId = devConfig.clientId;
+	timeseriesClientId = devConfig.timeseriesClientId;
 
 } else {
 	// read VCAP_SERVICES
@@ -87,7 +87,7 @@ if(node_env == 'development') {
 	timeseriesBase64ClientCredentials = process.env.timeseriesBase64ClientCredentials;
 	timeseriesURL = process.env.timeseriesURL;
 	uaaURL = process.env.uaaURL;
-	timeseriesClientId = process.env.clientId;
+	timeseriesClientId = process.env.timeseriesClientId;
 
 }
 
