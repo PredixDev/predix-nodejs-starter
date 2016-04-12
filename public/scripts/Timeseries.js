@@ -231,11 +231,16 @@ function getStartTimeSelectedValue()
 
 function configureTagsTimeseriesData (){
 
-  var raspberryPiConfig = getRaspberryPiConfig().then(function(response) {
-    return JSON.parse(response);
-  }, function(error) {
-    console.error("Failed when getting the RaspberryPi Configurations", error);
+  getRaspberryPiConfig().then(
+    function(response) {
+      raspberryPiConfig = JSON.parse(response);
+      console.log('RasperryPi Config using .uaa url: '+ raspberryPiConfig.uaaURL);
+      console.log('RasperryPi Config using [uaa] url: '+ raspberryPiConfig.uaaURL);
+    },
+    function(error) {
+      console.error("Failed when getting the RaspberryPi Configurations", error);
   });
+  
   select = document.getElementById('tagList');
   if (select) {
     console.log("Going to try to create option with value: " + raspberryPiConfig.assetTagname)
