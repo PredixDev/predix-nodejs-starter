@@ -19,32 +19,32 @@
     getRaspberryPiConfig().then(
       function(response) {
         raspberryPiConfig = JSON.parse(response);
-        console.log('RasperryPi Config using .uaa url: '+ raspberryPiConfig.uaaURL);
-        console.log('RasperryPi Config using [uaa] url: '+ raspberryPiConfig.uaaURL);
+        
+        var uaaRequest = new XMLHttpRequest();
+        var auth = raspberryPiConfig.timeseriesBase64ClientCredentials;
+        var uaaParams = "grant_type=client_credentials&client_id=" + raspberryPiConfig.clientId;
+        console.log("UAA URL GET: " + raspberryPiConfig.uaaURL + "?" + uaaParams);
+        console.log("UAA URL PARAMS: " + uaaParams);
+        console.log("UAA Authorization Header: Basic " + auth);
+        uaaRequest.open('GET', raspberryPiConfig.uaaURL + "?" + uaaParams, true);
+        uaaRequest.setRequestHeader("Authorization", "Basic " + auth);
+
+        uaaRequest.onreadystatechange = function() {
+          if (uaaRequest.readyState == 4) {
+            console.log("Access Token: " + uaaRequest.responseText);
+          }
+          else
+          {
+            console.log("No access token");
+          }
+        };
+        uaaRequest.send();
       },
       function(error) {
         console.error("Failed when getting the RaspberryPi Configurations", error);
     });
 
-    var uaaRequest = new XMLHttpRequest();
-    var auth = raspberryPiConfig.timeseriesBase64ClientCredentials;
-    var uaaParams = "grant_type=client_credentials&client_id=" + raspberryPiConfig.clientId;
-    console.log("UAA URL GET: " + raspberryPiConfig.uaaURL + "?" + uaaParams);
-    console.log("UAA URL PARAMS: " + uaaParams);
-    console.log("UAA Authorization Header: Basic " + auth);
-    uaaRequest.open('GET', raspberryPiConfig.uaaURL + "?" + uaaParams, true);
-    uaaRequest.setRequestHeader("Authorization", "Basic " + auth);
 
-    uaaRequest.onreadystatechange = function() {
-      if (uaaRequest.readyState == 4) {
-        console.log("Access Token: " + uaaRequest.responseText);
-      }
-      else
-      {
-        console.log("No access token");
-      }
-    };
-    uaaRequest.send();
 
     /*
     ironAjaxEl.url = config.uaaURL;
@@ -236,24 +236,23 @@ function configureTagsTimeseriesData (){
       raspberryPiConfig = JSON.parse(response);
       console.log('RasperryPi Config using .uaa url: '+ raspberryPiConfig.uaaURL);
       console.log('RasperryPi Config using [uaa] url: '+ raspberryPiConfig.uaaURL);
+
+      select = document.getElementById('tagList');
+      if (select) {
+        console.log("Going to try to create option with value: " + raspberryPiConfig.assetTagname)
+        var opt = document.createElement('option');
+        opt.value = raspberryPiConfig.assetTagname;
+        opt.selected = "selected";
+        opt.innerHTML = raspberryPiConfig.assetTagname;
+        select.appendChild(opt);
+      }
+      else {
+        document.getElementById("windService_machine_yearly").innerHTML = "Error getting data for tags";
+      }
     },
     function(error) {
       console.error("Failed when getting the RaspberryPi Configurations", error);
   });
-  
-  select = document.getElementById('tagList');
-  if (select) {
-    console.log("Going to try to create option with value: " + raspberryPiConfig.assetTagname)
-    var opt = document.createElement('option');
-    opt.value = raspberryPiConfig.assetTagname;
-    opt.selected = "selected";
-    opt.innerHTML = raspberryPiConfig.assetTagname;
-    select.appendChild(opt);
-  }
-  else {
-    document.getElementById("windService_machine_yearly").innerHTML = "Error getting data for tags";
-
-  }
 /*
   var request = new XMLHttpRequest();
   request.open('GET', '/api/services/windservices/tags', true);
