@@ -185,12 +185,23 @@ function getStartTimeSelectedValue()
 function configureTagsTimeseriesData (){
 
   var raspberryPiConfig = getRaspberryPiConfig().then(function(response) {
-    console.log(JSON.stringify(response));
     return JSON.parse(response);
   }, function(error) {
     console.error("Failed when getting the RaspberryPi Configurations", error);
   });
+  select = document.getElementById('tagList');
+  if (select) {
+    var opt = document.createElement('option');
+    opt.value = raspberryPiConfig.tagname;
+    opt.selected = "selected";
+    opt.innerHTML = raspberryPiConfig.tagname;
+    select.appendChild(opt);
+  }
+  else {
+    document.getElementById("windService_machine_yearly").innerHTML = "Error getting data for tags";
 
+  }
+/*
   var request = new XMLHttpRequest();
   request.open('GET', '/api/services/windservices/tags', true);
   request.onload = function() {
@@ -199,7 +210,7 @@ function configureTagsTimeseriesData (){
     //console.log('tags response is '+JSON.stringify(request.responseText, null, 2));
     select = document.getElementById('tagList');
     if (select) {
-      for(tagCount = 0; tagCount < data.results.length; tagCount++) {
+      for(tagCount = 0; tagCount < raspberryPiConfig.tagname.length; tagCount++) {
       var opt = document.createElement('option');
       opt.value = data.results[tagCount];
       if(tagCount === 0) {
@@ -215,11 +226,13 @@ function configureTagsTimeseriesData (){
     document.getElementById("windService_machine_yearly").innerHTML = "Error getting data for tags";
 
   }
+
 };
 request.onerror = function() {
   document.getElementById("windService_machine_yearly").innerHTML = "Error getting data for tags";
 };
 request.send();
+*/
 
 }
 
