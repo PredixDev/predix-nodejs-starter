@@ -37,6 +37,7 @@ var assetURL = '';
 var timeseriesZone = '';
 var timeseriesBase64ClientCredentials = '';
 var timeseriesURL = '';
+var timeseriesClientId = '';
 var uaaURL = '';
 
 // checking NODE_ENV to load cloud properties from VCAPS
