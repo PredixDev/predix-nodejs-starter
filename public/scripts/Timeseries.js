@@ -19,7 +19,7 @@
     getRaspberryPiConfig().then(
       function(response) {
         raspberryPiConfig = JSON.parse(response);
-        
+
         var uaaRequest = new XMLHttpRequest();
         var auth = raspberryPiConfig.timeseriesBase64ClientCredentials;
         var uaaParams = "grant_type=client_credentials&client_id=" + raspberryPiConfig.clientId;
@@ -234,12 +234,9 @@ function configureTagsTimeseriesData (){
   getRaspberryPiConfig().then(
     function(response) {
       raspberryPiConfig = JSON.parse(response);
-      console.log('RasperryPi Config using .uaa url: '+ raspberryPiConfig.uaaURL);
-      console.log('RasperryPi Config using [uaa] url: '+ raspberryPiConfig.uaaURL);
 
       select = document.getElementById('tagList');
       if (select) {
-        console.log("Going to try to create option with value: " + raspberryPiConfig.assetTagname)
         var opt = document.createElement('option');
         opt.value = raspberryPiConfig.assetTagname;
         opt.selected = "selected";

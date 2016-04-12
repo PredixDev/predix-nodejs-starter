@@ -57,6 +57,7 @@ if(node_env == 'development') {
 	timeseriesBase64ClientCredentials = devConfig.timeseriesBase64ClientCredentials;
 	timeseriesURL = devConfig.timeseriesURL;
 	uaaURL = devConfig.uaaURL;
+	timeseriesClientId = devConfig.clientId;
 
 } else {
 	// read VCAP_SERVICES
@@ -86,6 +87,7 @@ if(node_env == 'development') {
 	timeseriesBase64ClientCredentials = process.env.timeseriesBase64ClientCredentials;
 	timeseriesURL = process.env.timeseriesURL;
 	uaaURL = process.env.uaaURL;
+	timeseriesClientId = process.env.clientId;
 
 }
 
@@ -106,7 +108,8 @@ if(node_env == 'development') {
 			timeseriesZone : timeseriesZone,
 			timeseriesBase64ClientCredentials : timeseriesBase64ClientCredentials,
 			timeseriesURL : timeseriesURL,
-			uaaURL : uaaURL
+			uaaURL : uaaURL,
+			timeseriesClientId: timeseriesClientId
 		};
 
 		console.log('************'+node_env+'******************');
@@ -119,6 +122,7 @@ if(node_env == 'development') {
 		console.log('windServiceUrl = ' +windServiceUrl );
 		console.log('raspberryPiConfig.assetTagname = ' +raspberryPiConfig.assetTagname );
 		console.log('raspberryPiConfig.assetURL = ' +raspberryPiConfig.assetURL );
+		console.log('raspberryPiConfig.timeseriesClientId = ' +raspberryPiConfig.timeseriesClientId );
 		console.log('raspberryPiConfig.timeseriesZone = ' +raspberryPiConfig.timeseriesZone );
 		console.log('raspberryPiConfig.timeseriesBase64ClientCredentials = ' +raspberryPiConfig.timeseriesBase64ClientCredentials );
 		console.log('raspberryPiConfig.timeseriesURL = ' +raspberryPiConfig.timeseriesURL );
