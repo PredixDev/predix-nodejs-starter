@@ -5,6 +5,7 @@
   data from WindServices.
   **/
   var lineChartMap ;
+  var raspberryPiConfig = '';
 
   function onclick_machineServiceData() {
     lineChartMap = getMachineServiceData();
@@ -15,15 +16,19 @@
   **/
   function getMachineServiceData() {
 
-    var raspberryPiConfig = getRaspberryPiConfig().then(function(response) {
-      return JSON.parse(response);
-    }, function(error) {
-      console.error("Failed when getting the RaspberryPi Configurations", error);
+    getRaspberryPiConfig().then(
+      function(response) {
+        raspberryPiConfig = JSON.parse(response);
+        console.log('RasperryPi Config using .uaa url: '+ raspberryPiConfig.uaaURL);
+        console.log('RasperryPi Config using [uaa] url: '+ raspberryPiConfig.uaaURL);
+      },
+      function(error) {
+        console.error("Failed when getting the RaspberryPi Configurations", error);
     });
 
     var uaaRequest = new XMLHttpRequest();
-    var auth = raspberryPiConfig.timeseriesBase64ClientCredentials
-    var uaaParams = "grant_type=client_credentials&client_id=" + raspberryPiConfig.clientId
+    var auth = raspberryPiConfig.timeseriesBase64ClientCredentials;
+    var uaaParams = "grant_type=client_credentials&client_id=" + raspberryPiConfig.clientId;
     console.log("UAA URL GET: " + raspberryPiConfig.uaaURL + "?" + uaaParams);
     console.log("UAA URL PARAMS: " + uaaParams);
     console.log("UAA Authorization Header: Basic " + auth);
@@ -233,6 +238,7 @@ function configureTagsTimeseriesData (){
   });
   select = document.getElementById('tagList');
   if (select) {
+    console.log("Going to try to create option with value: " + raspberryPiConfig.assetTagname)
     var opt = document.createElement('option');
     opt.value = raspberryPiConfig.assetTagname;
     opt.selected = "selected";
