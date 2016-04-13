@@ -10,7 +10,7 @@
 
   function onclick_machineServiceData() {
     lineChartMap = getMachineServiceData();
-    //setInterval(updateChart,4000);
+    setInterval(updateChart,4000);
   }
 
   /**
@@ -24,9 +24,7 @@
         var uaaRequest = new XMLHttpRequest();
         var auth = raspberryPiConfig.timeseriesBase64ClientCredentials;
         var uaaParams = "grant_type=client_credentials&client_id=" + raspberryPiConfig.timeseriesClientId;
-        console.log("UAA URL GET: " + raspberryPiConfig.uaaURL + "/oauth/token?" + uaaParams);
-        console.log("UAA URL PARAMS: " + uaaParams);
-        console.log("UAA Authorization Header: Basic " + auth);
+
         uaaRequest.open('GET', raspberryPiConfig.uaaURL + "/oauth/token?" + uaaParams, true);
         uaaRequest.setRequestHeader("Authorization", "Basic " + auth);
 
@@ -34,36 +32,70 @@
           if (uaaRequest.readyState == 4) {
             var res = JSON.parse(uaaRequest.responseText);
             accessToken = res.token_type + ' ' + res.access_token;
-
             console.log("Access Token: " + accessToken);
+
+            var myTimeSeriesBody = {
+              tags: []
+            };
+
+            var timeSeriesGetData = new XMLHttpRequest();
+            var tagString = getTagsSelectedValue();
+            var starttime = getStartTimeSelectedValue();
+            var datapointsUrl = raspberryPiConfig.timeseriesURL;
+            timeSeriesGetData.open('POST', datapointsUrl, true);
+
+            var myTimeSeriesBody.tags.push({
+              "name" : tagString
+            });
+            if(starttime) {
+              myTimeSeriesBody.start = starttime;
+            }
+
+            timeSeriesGetData.setRequestHeader("Predix-Zone-Id", raspberryPiConfig.timeseriesZone);
+            timeSeriesGetData.setRequestHeader("Authorization", accessToken);
+            timeSeriesGetData.setRequestHeader("Content-Type", "application/json");
+
+            timeSeriesGetData.onreadystatechange = function() {
+              if (timeSeriesGetData.status >= 200 && timeSeriesGetData.status < 400) {
+                var data = JSON.parse(timeSeriesGetData.responseText);
+                document.getElementById("line_chart_info").innerHTML = 'Chart for Tags';
+                var str = JSON.stringify(timeSeriesGetData.responseText, null, 2);
+                console.log('data is '+str);
+                lineChartMap = constructMachineChartResponse(data);
+                return lineChartMap;
+              }
+              else {
+                document.getElementById("windService_machine_yearly").innerHTML = "Error getting data for tags";
+              }
+            }
           }
           else
           {
             console.log("No access token");
           }
+
+          console.log("Sending Timeseries Request...");
+          console.log(tagString);
+          console.log(starttime);
+          console.log(raspberryPiConfig.timeseriesZone);
+          console.log(accessToken);
+          console.log(JSON.stringify(myTimeSeriesBody));
+          timeSeriesGetData.send(JSON.stringify(myTimeSeriesBody));
         };
+
+        uaaRequest.onerror = function() {
+          document.getElementById("windService_machine_yearly").innerHTML = "Error getting UAA Token";
+        };
+
+        console.log("UAA URL GET: " + raspberryPiConfig.uaaURL + "/oauth/token?" + uaaParams);
+        console.log("UAA URL PARAMS: " + uaaParams);
+        console.log("UAA Authorization Header: Basic " + auth);
         uaaRequest.send();
       },
       function(error) {
         console.error("Failed when getting the RaspberryPi Configurations", error);
     });
 
-
-
-    /*
-    ironAjaxEl.url = config.uaaURL;
-    ironAjaxEl.handleAs = "json";
-    var auth = btoa( config.ts_client+":" +config.ts_secret)
-    ironAjaxEl.headers = {"Authorization": "Basic "+auth};
-    ironAjaxEl.params = {"grant_type":"client_credentials","client_id":config.ts_client};
-    ironAjaxEl.addEventListener('response', function(evt) {
-      if(evt.detail.response.access_token)
-        token = evt.detail.response.access_token;
-      else {
-        console.log("no token")
-        return;
-      }
-       */
     /*
     var request = new XMLHttpRequest();
     var tagString = getTagsSelectedValue();
@@ -172,11 +204,78 @@ function getStartTimeSelectedValue()
   }
 
   function updateChart() {
+    /*
       var tagString = getTagsSelectedValue();
       var request = new XMLHttpRequest();
       var datapointsUrl = "/api/services/windservices/yearly_data/sensor_id/"+tagString+"?order=asc&starttime=5mi-ago";
       //console.log(datapointsUrl);
       request.open('GET', datapointsUrl, true);
+      */
+
+      var uaaRequest = new XMLHttpRequest();
+      var auth = raspberryPiConfig.timeseriesBase64ClientCredentials;
+      var uaaParams = "grant_type=client_credentials&client_id=" + raspberryPiConfig.timeseriesClientId;
+
+      uaaRequest.open('GET', raspberryPiConfig.uaaURL + "/oauth/token?" + uaaParams, true);
+      uaaRequest.setRequestHeader("Authorization", "Basic " + auth);
+
+      uaaRequest.onreadystatechange = function() {
+        if (uaaRequest.readyState == 4) {
+          var res = JSON.parse(uaaRequest.responseText);
+          accessToken = res.token_type + ' ' + res.access_token;
+
+          var myTimeSeriesBody = {
+            tags: []
+          };
+
+          var timeSeriesGetData = new XMLHttpRequest();
+          var tagString = getTagsSelectedValue();
+          var starttime = getStartTimeSelectedValue();
+          var datapointsUrl = raspberryPiConfig.timeseriesURL;
+          timeSeriesGetData.open('POST', datapointsUrl, true);
+
+          var myTimeSeriesBody.tags.push({
+            "name" : tagString
+          });
+          myTimeSeriesBody.start = "5mi-ago";
+
+          timeSeriesGetData.setRequestHeader("Predix-Zone-Id", raspberryPiConfig.timeseriesZone);
+          timeSeriesGetData.setRequestHeader("Authorization", accessToken);
+          timeSeriesGetData.setRequestHeader("Content-Type", "application/json");
+
+          timeSeriesGetData.onload = function() {
+            if (request.status >= 200 && request.status < 400) {
+              var data = JSON.parse(request.responseText);
+          //    var str = JSON.stringify(request.responseText, null, 2);
+              //console.log('updated data is '+str);
+              for(i = 0; i < data.tags.length; i++) {
+                var datapoints = data.tags[i].results[0].values;
+                for(j = 0; j < datapoints.length; j++) {
+                  lineChartDemo = lineChartMap.get(data.tags[i].name);
+                  var d = new Date(datapoints[j][0]);
+                  var formatDate = monthNames[d.getMonth()]+'-'+d.getFullYear()+'-'+d.getDate()+' '+d.getHours()+' '+d.getMinutes()+':'+d.getSeconds()+" "+d.getMilliseconds();
+                  lineChartDemo.addData([datapoints[j][1]],formatDate);
+                  lineChartDemo.removeData();
+                }
+              }
+            }
+            else {
+              {
+                console.log("Error on updating the chart...");
+              }
+            }
+          };
+          timeSeriesGetData.send(JSON.stringify(myTimeSeriesBody));
+        }
+        else {
+          console.log("No access token");
+        }
+      };
+      uaaRequest.onerror = function() {
+        document.getElementById("windService_machine_yearly").innerHTML = "Error getting UAA Access Token";
+      };
+      uaaRequest.send();
+/*
       request.onload = function() {
       if (request.status >= 200 && request.status < 400) {
         var data = JSON.parse(request.responseText);
@@ -194,11 +293,7 @@ function getStartTimeSelectedValue()
         }
       }
     };
-    request.onerror = function() {
-      document.getElementById("windService_machine_yearly").innerHTML = "Error getting data for tags";
-    };
-    request.send();
-
+    */
   }
 
   /*
