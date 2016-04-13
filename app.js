@@ -157,8 +157,6 @@ app.use(session({
 
 //Initializing auth.js modules with UAA configurations
 app.use(auth.init(uaaConfig));
-//Initializing secure.js modules with raspberryPi configurations
-//app.use(secure.init(raspberryPiConfig));
 
 app.get('/favicon.ico', function (req, res) {
   res.send('favicon.ico');
