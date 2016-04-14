@@ -34,6 +34,9 @@ var windServiceUrl = '';
 // Raspberry PI env variables
 var assetTagname = '';
 var assetURL = '';
+var assetZoneId = '';
+var assetBase64ClientCredentials = '';
+var assetClientId = '';
 var timeseriesZone = '';
 var timeseriesBase64ClientCredentials = '';
 var timeseriesURL = '';
@@ -54,11 +57,14 @@ if(node_env == 'development') {
 	// Raspberry PI env variables
 	assetTagname = devConfig.tagname;
 	assetURL = devConfig.assetURL;
+	assetZoneId = devConfig.assetZoneId;
+	assetBase64ClientCredentials = devConfig.assetBase64ClientCredentials;
+	assetClientId = devConfig.assetClientId;
 	timeseriesZone = devConfig.timeseries_zone;
 	timeseriesBase64ClientCredentials = devConfig.timeseriesBase64ClientCredentials;
 	timeseriesURL = devConfig.timeseriesURL;
-	uaaURL = devConfig.uaaURL;
 	timeseriesClientId = devConfig.timeseriesClientId;
+	uaaURL = devConfig.uaaURL;
 
 } else {
 	// read VCAP_SERVICES
@@ -84,11 +90,15 @@ if(node_env == 'development') {
 	// Raspberry PI env variables
 	assetTagname = process.env.tagname;
 	assetURL = process.env.assetURL;
+	assetZoneId = process.env.assetZoneId,
+	assetBase64ClientCredentials = process.env.assetBase64ClientCredentials,
+	assetClientId = process.env.assetClientId,
 	timeseriesZone = process.env.timeseries_zone;
 	timeseriesBase64ClientCredentials = process.env.timeseriesBase64ClientCredentials;
 	timeseriesURL = process.env.timeseriesURL;
-	uaaURL = process.env.uaaURL;
 	timeseriesClientId = process.env.timeseriesClientId;
+	uaaURL = process.env.uaaURL;
+
 
 }
 
@@ -106,11 +116,14 @@ if(node_env == 'development') {
 		var raspberryPiConfig = {
 			assetTagname : assetTagname,
 			assetURL : assetURL,
+			assetZoneId : assetZoneId,
+			assetBase64ClientCredentials : assetBase64ClientCredentials,
+			assetClientId: assetClientId,
 			timeseriesZone : timeseriesZone,
 			timeseriesBase64ClientCredentials : timeseriesBase64ClientCredentials,
 			timeseriesURL : timeseriesURL,
-			uaaURL : uaaURL,
-			timeseriesClientId: timeseriesClientId
+			timeseriesClientId: timeseriesClientId,
+			uaaURL : uaaURL
 		};
 
 		console.log('************'+node_env+'******************');
@@ -123,6 +136,9 @@ if(node_env == 'development') {
 		console.log('windServiceUrl = ' +windServiceUrl );
 		console.log('raspberryPiConfig.assetTagname = ' +raspberryPiConfig.assetTagname );
 		console.log('raspberryPiConfig.assetURL = ' +raspberryPiConfig.assetURL );
+		console.log('raspberryPiConfig.assetClientId = ' +raspberryPiConfig.assetClientId );
+		console.log('raspberryPiConfig.assetZoneId = ' +raspberryPiConfig.assetZoneId );
+		console.log('raspberryPiConfig.assetBase64ClientCredentials = ' +raspberryPiConfig.assetBase64ClientCredentials );
 		console.log('raspberryPiConfig.timeseriesClientId = ' +raspberryPiConfig.timeseriesClientId );
 		console.log('raspberryPiConfig.timeseriesZone = ' +raspberryPiConfig.timeseriesZone );
 		console.log('raspberryPiConfig.timeseriesBase64ClientCredentials = ' +raspberryPiConfig.timeseriesBase64ClientCredentials );
