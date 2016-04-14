@@ -13,4 +13,4 @@ env:
     clientId: app-client-id
     base64ClientCredential: YXBwLWNsaWVudC1pZDpzZWNyZXQ=
     # Following properties configured only for Timeseries WindData service Integration
-    windServiceUrl: http://machine-workshop-training4.run.aws-usw02-pr.ice.predix.io
+    windServiceUrl: https://machine-workshop-training4.run.aws-usw02-pr.ice.predix.io
