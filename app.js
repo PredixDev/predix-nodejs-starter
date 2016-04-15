@@ -35,12 +35,8 @@ var windServiceUrl = '';
 var assetTagname = '';
 var assetURL = '';
 var assetZoneId = '';
-var assetBase64ClientCredentials = '';
-var assetClientId = '';
 var timeseriesZone = '';
-var timeseriesBase64ClientCredentials = '';
 var timeseriesURL = '';
-var timeseriesClientId = '';
 var uaaURL = '';
 
 // checking NODE_ENV to load cloud properties from VCAPS
@@ -58,18 +54,16 @@ if(node_env == 'development') {
 	assetTagname = devConfig.tagname;
 	assetURL = devConfig.assetURL;
 	assetZoneId = devConfig.assetZoneId;
-	assetBase64ClientCredentials = devConfig.assetBase64ClientCredentials;
-	assetClientId = devConfig.assetClientId;
 	timeseriesZone = devConfig.timeseries_zone;
-	timeseriesBase64ClientCredentials = devConfig.timeseriesBase64ClientCredentials;
 	timeseriesURL = devConfig.timeseriesURL;
-	timeseriesClientId = devConfig.timeseriesClientId;
 	uaaURL = devConfig.uaaURL;
 
 } else {
 	// read VCAP_SERVICES
 	var vcapsServices = JSON.parse(process.env.VCAP_SERVICES);
 	var uaaService = vcapsServices[process.env.uaa_service_label];
+	var assetService = vcapsServices['predix-asset'];
+	var timeseriesService = vcapsServices['predix-timeseries'];
 	windServiceUrl = process.env.windServiceUrl;
 
 	var uaaUri = '';
@@ -78,6 +72,16 @@ if(node_env == 'development') {
 		//console.log('UAA service URL is  '+uaaService[0].credentials.uri)
 		uaaUri = uaaService[0].credentials.uri;
 	}
+
+	if(assetService) {
+		assetURL = assetService[0].credentials.uri + "/" + process.env.assetMachine;
+		assetZoneId = assetService[0].credentials.zone["http-header-value"];
+	}
+	if(timeseriesService) {
+		timeseriesZone = timeseriesService[0].credentials.query["zone-http-header-value"];
+		timeseriesURL = timeseriesService[0].credentials.query.uri;
+	}
+
 	// read VCAP_APPLICATION
 	var vcapsApplication = JSON.parse(process.env.VCAP_APPLICATION);
 	applicationUrl = 'https://'+vcapsApplication.uris[0];
@@ -89,17 +93,6 @@ if(node_env == 'development') {
 
 	// Raspberry PI env variables
 	assetTagname = process.env.tagname;
-	assetURL = process.env.assetURL;
-	assetZoneId = process.env.assetZoneId,
-	assetBase64ClientCredentials = process.env.assetBase64ClientCredentials,
-	assetClientId = process.env.assetClientId,
-	timeseriesZone = process.env.timeseries_zone;
-	timeseriesBase64ClientCredentials = process.env.timeseriesBase64ClientCredentials;
-	timeseriesURL = process.env.timeseriesURL;
-	timeseriesClientId = process.env.timeseriesClientId;
-	uaaURL = process.env.uaaURL;
-
-
 }
 
 /* Setting the uaa Config used in the router auth.js*/
@@ -117,13 +110,11 @@ if(node_env == 'development') {
 			assetTagname : assetTagname,
 			assetURL : assetURL,
 			assetZoneId : assetZoneId,
-			assetBase64ClientCredentials : assetBase64ClientCredentials,
-			assetClientId: assetClientId,
 			timeseriesZone : timeseriesZone,
-			timeseriesBase64ClientCredentials : timeseriesBase64ClientCredentials,
 			timeseriesURL : timeseriesURL,
-			timeseriesClientId: timeseriesClientId,
-			uaaURL : uaaURL
+			uaaURL : uaaUri,
+			uaaClientId: clientId,
+			uaaBase64ClientCredential: base64ClientCredential
 		};
 
 		console.log('************'+node_env+'******************');
@@ -136,12 +127,8 @@ if(node_env == 'development') {
 		console.log('windServiceUrl = ' +windServiceUrl );
 		console.log('raspberryPiConfig.assetTagname = ' +raspberryPiConfig.assetTagname );
 		console.log('raspberryPiConfig.assetURL = ' +raspberryPiConfig.assetURL );
-		console.log('raspberryPiConfig.assetClientId = ' +raspberryPiConfig.assetClientId );
 		console.log('raspberryPiConfig.assetZoneId = ' +raspberryPiConfig.assetZoneId );
-		console.log('raspberryPiConfig.assetBase64ClientCredentials = ' +raspberryPiConfig.assetBase64ClientCredentials );
-		console.log('raspberryPiConfig.timeseriesClientId = ' +raspberryPiConfig.timeseriesClientId );
 		console.log('raspberryPiConfig.timeseriesZone = ' +raspberryPiConfig.timeseriesZone );
-		console.log('raspberryPiConfig.timeseriesBase64ClientCredentials = ' +raspberryPiConfig.timeseriesBase64ClientCredentials );
 		console.log('raspberryPiConfig.timeseriesURL = ' +raspberryPiConfig.timeseriesURL );
 		console.log('raspberryPiConfig.uaaURL = ' +raspberryPiConfig.uaaURL );
 		console.log('***************************');

@@ -22,8 +22,8 @@ the data of those tags chosen by the user
 function getMachineServiceData() {
 
   var timeSeriesUaaRequest = new XMLHttpRequest();
-  var timeSeriesAuth = raspberryPiConfig.timeseriesBase64ClientCredentials;
-  var uaaParams = "grant_type=client_credentials&client_id=" + raspberryPiConfig.timeseriesClientId;
+  var timeSeriesAuth = raspberryPiConfig.uaaBase64ClientCredential;
+  var uaaParams = "grant_type=client_credentials&client_id=" + raspberryPiConfig.uaaClientId;
 
   timeSeriesUaaRequest.open('GET', raspberryPiConfig.uaaURL + "/oauth/token?" + uaaParams, true);
   timeSeriesUaaRequest.setRequestHeader("Authorization", "Basic " + timeSeriesAuth);
@@ -91,9 +91,9 @@ function getMachineServiceData() {
   timeSeriesUaaRequest.send();
 
   var assetUaaRequest = new XMLHttpRequest();
-  var assetAuth = raspberryPiConfig.assetBase64ClientCredentials;
+  var assetAuth = raspberryPiConfig.uaaBase64ClientCredential;
   var tagString = getTagsSelectedValue();
-  var assetUaaParams = "grant_type=client_credentials&client_id=" + raspberryPiConfig.assetClientId;
+  var assetUaaParams = "grant_type=client_credentials&client_id=" + raspberryPiConfig.uaaClientId;
 
   assetUaaRequest.open('GET', raspberryPiConfig.uaaURL + "/oauth/token?" + assetUaaParams, true);
   assetUaaRequest.setRequestHeader("Authorization", "Basic " + assetAuth);
@@ -148,7 +148,6 @@ function getMachineServiceData() {
 
       if (tagString != undefined)
       {
-        console.log("Sending Asset request... " + assetGetDataURL);
         assetGetData.send();
       }
     }
@@ -249,8 +248,8 @@ Method to update the Chart with the latest data from the selected tags
 function updateChart() {
 
     var uaaRequest = new XMLHttpRequest();
-    var auth = raspberryPiConfig.timeseriesBase64ClientCredentials;
-    var uaaParams = "grant_type=client_credentials&client_id=" + raspberryPiConfig.timeseriesClientId;
+    var auth = raspberryPiConfig.uaaBase64ClientCredential;
+    var uaaParams = "grant_type=client_credentials&client_id=" + raspberryPiConfig.uaaClientId;
 
     uaaRequest.open('GET', raspberryPiConfig.uaaURL + "/oauth/token?" + uaaParams, true);
     uaaRequest.setRequestHeader("Authorization", "Basic " + auth);
