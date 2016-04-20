@@ -26,22 +26,3 @@ router.get('/data', function(req, res, next) {
 });
 
 module.exports = router;
-/*
-module.exports = {
-  init: function (options) {
-    options = options ;
-    this.assetTagname = options.assetTagname;
-    this.assetURL = options.assetURL;
-    this.timeseriesZone = options.timeseriesZone;
-    this.timeseriesBase64ClientCredentials = options.timeseriesBase64ClientCredentials;
-    this.timeseriesURL = options.timeseriesURL;
-    this.uaaURL = options.uaaURL;
-    return this.getRaspberryPIConfig();
-  },
-  getRaspberryPIConfig: function () {
-    var raspberryPiConfig = this;
-    return raspberryPiConfig;
-  },
-  router
-};
-*/
