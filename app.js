@@ -31,6 +31,13 @@ var applicationUrl = '';
 var base64ClientCredential = '';
 var windServiceUrl = '';
 
+// Raspberry PI env variables
+var assetTagname = '';
+var assetURL = '';
+var assetZoneId = '';
+var timeseriesZone = '';
+var timeseriesURL = '';
+var uaaURL = '';
 
 // checking NODE_ENV to load cloud properties from VCAPS
 // or development properties from config.json
@@ -43,11 +50,20 @@ if(node_env == 'development') {
 	base64ClientCredential  = devConfig.base64ClientCredential;
 	applicationUrl = devConfig.appUrl;
 	windServiceUrl = devConfig.windServiceUrl;
+	// Raspberry PI env variables
+	assetTagname = devConfig.tagname;
+	assetURL = devConfig.assetURL;
+	assetZoneId = devConfig.assetZoneId;
+	timeseriesZone = devConfig.timeseries_zone;
+	timeseriesURL = devConfig.timeseriesURL;
+	uaaURL = devConfig.uaaURL;
 
 } else {
 	// read VCAP_SERVICES
 	var vcapsServices = JSON.parse(process.env.VCAP_SERVICES);
 	var uaaService = vcapsServices[process.env.uaa_service_label];
+	var assetService = vcapsServices['predix-asset'];
+	var timeseriesService = vcapsServices['predix-timeseries'];
 	windServiceUrl = process.env.windServiceUrl;
 
 	var uaaUri = '';
@@ -56,6 +72,16 @@ if(node_env == 'development') {
 		//console.log('UAA service URL is  '+uaaService[0].credentials.uri)
 		uaaUri = uaaService[0].credentials.uri;
 	}
+
+	if(assetService) {
+		assetURL = assetService[0].credentials.uri + "/" + process.env.assetMachine;
+		assetZoneId = assetService[0].credentials.zone["http-header-value"];
+	}
+	if(timeseriesService) {
+		timeseriesZone = timeseriesService[0].credentials.query["zone-http-header-value"];
+		timeseriesURL = timeseriesService[0].credentials.query.uri;
+	}
+
 	// read VCAP_APPLICATION
 	var vcapsApplication = JSON.parse(process.env.VCAP_APPLICATION);
 	applicationUrl = 'https://'+vcapsApplication.uris[0];
@@ -65,17 +91,30 @@ if(node_env == 'development') {
 	clientId = process.env.clientId;
 	base64ClientCredential = process.env.base64ClientCredential;
 
+	// Raspberry PI env variables
+	assetTagname = process.env.tagname;
 }
 
 /* Setting the uaa Config used in the router auth.js*/
 
-	var uaaConfig = {
+		var uaaConfig = {
 			clientId: clientId,
 			serverUrl : uaaUri,
 	    defaultClientRoute : '/index.html',
 	    base64ClientCredential: base64ClientCredential,
 			callbackUrl: applicationUrl+'/callback',
 			appUrl: applicationUrl
+		};
+
+		var raspberryPiConfig = {
+			assetTagname : assetTagname,
+			assetURL : assetURL,
+			assetZoneId : assetZoneId,
+			timeseriesZone : timeseriesZone,
+			timeseriesURL : timeseriesURL,
+			uaaURL : uaaUri,
+			uaaClientId: clientId,
+			uaaBase64ClientCredential: base64ClientCredential
 		};
 
 		console.log('************'+node_env+'******************');
@@ -86,15 +125,23 @@ if(node_env == 'development') {
 		console.log('uaaConfig.callbackUrl = ' +uaaConfig.callbackUrl );
 		console.log('uaaConfig.appUrl = ' +uaaConfig.appUrl );
 		console.log('windServiceUrl = ' +windServiceUrl );
-		console.log('*******************************');
+		console.log('raspberryPiConfig.assetTagname = ' +raspberryPiConfig.assetTagname );
+		console.log('raspberryPiConfig.assetURL = ' +raspberryPiConfig.assetURL );
+		console.log('raspberryPiConfig.assetZoneId = ' +raspberryPiConfig.assetZoneId );
+		console.log('raspberryPiConfig.timeseriesZone = ' +raspberryPiConfig.timeseriesZone );
+		console.log('raspberryPiConfig.timeseriesURL = ' +raspberryPiConfig.timeseriesURL );
+		console.log('raspberryPiConfig.uaaURL = ' +raspberryPiConfig.uaaURL );
+		console.log('***************************');
+
+		//app.configure(function() {
+			app.set('raspberryPiConfig', raspberryPiConfig);
+		//});
 
 
-
-
-var server = app.listen(config.express.port, function () {
-  var host = server.address().address;
-  var port = server.address().port;
-	console.log ('Server Started at ' + uaaConfig.appUrl);
+		var server = app.listen(config.express.port, function () {
+  	var host = server.address().address;
+  	var port = server.address().port;
+		console.log ('Server Started at ' + uaaConfig.appUrl);
 });
 
 //Initializing application modules

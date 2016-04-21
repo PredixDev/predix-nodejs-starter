@@ -19,4 +19,10 @@ router.get('/', function(req, res, next) {
   res.sendFile(path.join(__dirname + '/../public/secure.html'));
 });
 
+/* GET Secure resource for data */
+router.get('/data', function(req, res, next) {
+  console.log('Accessing the secure section ...'+path.join(__dirname + '/secure.html'))
+  res.json(req.app.get('raspberryPiConfig'));
+});
+
 module.exports = router;
