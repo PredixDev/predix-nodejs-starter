@@ -1,9 +1,12 @@
 {
   "development":{
-    "clientId": "mvp3_ref_app",
-    "uaaUri" : "https://11ccb14b-0a4d-4e1e-ace0-9f6bbcbbe83a.predix-uaa.run.aws-usw02-pr.ice.predix.io",
-    "base64ClientCredential": "bXZwM19yZWZfYXBwOm12cDNyZWZAcHA=",
+    "clientId": "{UAA Client ID created}",
+    "uaaUri": "{The UAA URI end point to get auth token }",
+    "base64ClientCredential": "{Get clientID:clientSecret then base64 encode and place it here}",
     "appUrl": "http://localhost:3000",
-    "windServiceUrl": "https://machine-ws-winddata-timeseries-service.run.aws-usw02-pr.ice.predix.io"
+    "windServiceUrl": "{URL of the microservice <your-name>-winddata-timeseries-service}, e.g.  https://your-name-winddata-timeseries-service.run.asw-usw02-pr.predix.io",
+    "assetZoneId": "{The Zone ID for the Asset Service Created}",
+    "tagname": "{The Tagname used to create a tag in Asset Service}",
+    "timeseries_zone": "{The Zone ID for the Timeseries Service Created}"
   }
 }
