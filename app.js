@@ -39,6 +39,7 @@ var timeseriesZone = '';
 var timeseriesURL = '';
 var uaaURL = '';
 var isConnectedTimeseriesEnabled = false;
+var isConnectedAssetEnabled = false;
 
 // checking NODE_ENV to load cloud properties from VCAPS
 // or development properties from config.json
@@ -107,9 +108,14 @@ if(node_env == 'development') {
 			appUrl: applicationUrl
 		};
 
-		if (timeseriesURL != '' && assetURL != '' ) {
+		if (timeseriesURL != '') {
 			isConnectedTimeseriesEnabled = true;
 		}
+
+		if (assetURL != '' ) {
+			isConnectedAssetEnabled = true;
+		}
+
 		var connectedDeviceConfig = {
 			assetTagname : assetTagname,
 			assetURL : assetURL,
@@ -119,7 +125,8 @@ if(node_env == 'development') {
 			uaaURL : uaaUri,
 			uaaClientId: clientId,
 			uaaBase64ClientCredential: base64ClientCredential,
-			isConnectedTimeseriesEnabled: isConnectedTimeseriesEnabled
+			isConnectedTimeseriesEnabled: isConnectedTimeseriesEnabled,
+			isConnectedAssetEnabled: isConnectedAssetEnabled
 		};
 
 		console.log('************'+node_env+'******************');
