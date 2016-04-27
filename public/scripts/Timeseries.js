@@ -53,6 +53,84 @@ function getMachineServiceData() {
     };
     request.send();
   }
+
+  // Call the Asset service if applicable
+  if (connectedDeviceConfig.isConnectedAssetEnabled) {
+    // Get the Asset data if the Asset URI is enabled
+    var assetUaaRequest = new XMLHttpRequest();
+    var assetAuth = connectedDeviceConfig.uaaBase64ClientCredential;
+    var tagString = getTagsSelectedValue();
+    var assetUaaParams = "grant_type=client_credentials&client_id=" + connectedDeviceConfig.uaaClientId;
+
+    assetUaaRequest.open('GET', connectedDeviceConfig.uaaURL + "/oauth/token?" + assetUaaParams, true);
+    assetUaaRequest.setRequestHeader("Authorization", "Basic " + assetAuth);
+
+    assetUaaRequest.onreadystatechange = function() {
+      if (assetUaaRequest.readyState == 4) {
+        var res = JSON.parse(assetUaaRequest.responseText);
+        var assetAccessToken = res.token_type + ' ' + res.access_token;
+
+        var assetGetData = new XMLHttpRequest();
+        var assetGetDataURL = connectedDeviceConfig.assetURL + "/" + tagString;
+
+        assetGetData.open('GET', assetGetDataURL, true);
+
+        assetGetData.setRequestHeader("Predix-Zone-Id", connectedDeviceConfig.assetZoneId);
+        assetGetData.setRequestHeader("Authorization", assetAccessToken);
+        assetGetData.setRequestHeader("Content-Type", "application/json");
+
+        assetGetData.onreadystatechange = function() {
+          if (assetGetData.status >= 200 && assetGetData.status < 400) {
+            if (assetGetData.readyState == 4) {
+              var resultJSON = JSON.parse(assetGetData.response)[0];
+              var nameOfTable = document.getElementById("predix_asset_table");
+              nameOfTable.innerHTML = "Asset Information";
+
+              var table = document.getElementById("aTable");
+              keys = Object.keys(resultJSON);
+              for(var i = 0; i<keys.length; i++) {
+               // Create an empty <tr> element and add it to the 1st position of the table:
+               var row = table.insertRow(i);
+               // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
+               var cell1 = row.insertCell(0);
+               var cell2 = row.insertCell(1);
+               cell1.style.borderWidth = "1px"
+               cell1.style.borderStyle = "solid"
+               cell1.style.borderColor = "black"
+
+               cell2.style.borderWidth = "1px"
+               cell2.style.borderStyle = "solid"
+               cell2.style.borderColor = "black"
+               // Add some text to the new cells:
+               cell1.innerHTML = keys[i];
+               cell2.innerHTML = resultJSON[keys[i]];
+             }
+             table.style.borderCollapse= "collapse";
+            }
+          }
+          else {
+            document.getElementById("predix_asset_table").innerHTML = "Error getting data for Asset: " + tagString;
+          }
+        }
+
+        if (tagString != undefined)
+        {
+          assetGetData.send();
+        }
+      }
+      else
+      {
+        console.log("No access token");
+      }
+
+    };
+
+    assetUaaRequest.onerror = function() {
+      document.getElementById("predix_asset_table").innerHTML = "Error getting UAA Token for Predix Asset";
+    };
+
+    assetUaaRequest.send();
+  }
 }
 
 /**
@@ -130,83 +208,6 @@ function getMachineServiceDataWithoutMicroservice() {
   };
 
   timeSeriesUaaRequest.send();
-
-  if (connectedDeviceConfig.isConnectedAssetEnabled) {
-    // Get the Asset data if the Asset URI is enabled
-    var assetUaaRequest = new XMLHttpRequest();
-    var assetAuth = connectedDeviceConfig.uaaBase64ClientCredential;
-    var tagString = getTagsSelectedValue();
-    var assetUaaParams = "grant_type=client_credentials&client_id=" + connectedDeviceConfig.uaaClientId;
-
-    assetUaaRequest.open('GET', connectedDeviceConfig.uaaURL + "/oauth/token?" + assetUaaParams, true);
-    assetUaaRequest.setRequestHeader("Authorization", "Basic " + assetAuth);
-
-    assetUaaRequest.onreadystatechange = function() {
-      if (assetUaaRequest.readyState == 4) {
-        var res = JSON.parse(assetUaaRequest.responseText);
-        var assetAccessToken = res.token_type + ' ' + res.access_token;
-
-        var assetGetData = new XMLHttpRequest();
-        var assetGetDataURL = connectedDeviceConfig.assetURL + "/" + tagString;
-
-        assetGetData.open('GET', assetGetDataURL, true);
-
-        assetGetData.setRequestHeader("Predix-Zone-Id", connectedDeviceConfig.assetZoneId);
-        assetGetData.setRequestHeader("Authorization", assetAccessToken);
-        assetGetData.setRequestHeader("Content-Type", "application/json");
-
-        assetGetData.onreadystatechange = function() {
-          if (assetGetData.status >= 200 && assetGetData.status < 400) {
-            if (assetGetData.readyState == 4) {
-              var resultJSON = JSON.parse(assetGetData.response)[0];
-              var nameOfTable = document.getElementById("predix_asset_table");
-              nameOfTable.innerHTML = "Asset Information";
-
-              var table = document.getElementById("aTable");
-              keys = Object.keys(resultJSON);
-              for(var i = 0; i<keys.length; i++) {
-               // Create an empty <tr> element and add it to the 1st position of the table:
-               var row = table.insertRow(i);
-               // Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
-               var cell1 = row.insertCell(0);
-               var cell2 = row.insertCell(1);
-               cell1.style.borderWidth = "1px"
-               cell1.style.borderStyle = "solid"
-               cell1.style.borderColor = "black"
-
-               cell2.style.borderWidth = "1px"
-               cell2.style.borderStyle = "solid"
-               cell2.style.borderColor = "black"
-               // Add some text to the new cells:
-               cell1.innerHTML = keys[i];
-               cell2.innerHTML = resultJSON[keys[i]];
-             }
-             table.style.borderCollapse= "collapse";
-            }
-          }
-          else {
-            document.getElementById("predix_asset_table").innerHTML = "Error getting data for Asset: " + tagString;
-          }
-        }
-
-        if (tagString != undefined)
-        {
-          assetGetData.send();
-        }
-      }
-      else
-      {
-        console.log("No access token");
-      }
-
-    };
-
-    assetUaaRequest.onerror = function() {
-      document.getElementById("predix_asset_table").innerHTML = "Error getting UAA Token for Predix Asset";
-    };
-
-    assetUaaRequest.send();
-  }
 }
 
 /**
