@@ -445,7 +445,7 @@ function configureTagsTimeseriesData() {
       if (connectedDeviceConfig.isConnectedTimeseriesEnabled) {
         headerTitle = document.getElementById('tag_list_title');
         if (headerTitle) {
-          opt.innerHTML = 'Connected Device Tag List';
+          headerTitle.innerHTML = 'Connected Device Tag List';
         }
         select = document.getElementById('tagList');
         if (select) {
