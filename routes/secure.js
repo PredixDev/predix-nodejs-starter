@@ -22,7 +22,7 @@ router.get('/', function(req, res, next) {
 /* GET Secure resource for data */
 router.get('/data', function(req, res, next) {
   console.log('Accessing the secure section ...'+path.join(__dirname + '/secure.html'))
-  res.json(req.app.get('raspberryPiConfig'));
+  res.json(req.app.get('connectedDeviceConfig'));
 });
 
 module.exports = router;

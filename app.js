@@ -31,13 +31,14 @@ var applicationUrl = '';
 var base64ClientCredential = '';
 var windServiceUrl = '';
 
-// Raspberry PI env variables
+// Connected Device env variables
 var assetTagname = '';
 var assetURL = '';
 var assetZoneId = '';
 var timeseriesZone = '';
 var timeseriesURL = '';
 var uaaURL = '';
+var isConnectedTimeseriesEnabled = false;
 
 // checking NODE_ENV to load cloud properties from VCAPS
 // or development properties from config.json
@@ -50,13 +51,13 @@ if(node_env == 'development') {
 	base64ClientCredential  = devConfig.base64ClientCredential;
 	applicationUrl = devConfig.appUrl;
 	windServiceUrl = devConfig.windServiceUrl;
-	// Raspberry PI env variables
+
+	// Connected Device env variables
 	assetTagname = devConfig.tagname;
 	assetURL = devConfig.assetURL;
 	assetZoneId = devConfig.assetZoneId;
 	timeseriesZone = devConfig.timeseries_zone;
 	timeseriesURL = devConfig.timeseriesURL;
-	uaaURL = devConfig.uaaURL;
 
 } else {
 	// read VCAP_SERVICES
@@ -106,7 +107,10 @@ if(node_env == 'development') {
 			appUrl: applicationUrl
 		};
 
-		var raspberryPiConfig = {
+		if (timeseriesURL != '' && assetURL != '' ) {
+			isConnectedTimeseriesEnabled = true;
+		}
+		var connectedDeviceConfig = {
 			assetTagname : assetTagname,
 			assetURL : assetURL,
 			assetZoneId : assetZoneId,
@@ -114,7 +118,8 @@ if(node_env == 'development') {
 			timeseriesURL : timeseriesURL,
 			uaaURL : uaaUri,
 			uaaClientId: clientId,
-			uaaBase64ClientCredential: base64ClientCredential
+			uaaBase64ClientCredential: base64ClientCredential,
+			isConnectedTimeseriesEnabled: isConnectedTimeseriesEnabled
 		};
 
 		console.log('************'+node_env+'******************');
@@ -125,16 +130,16 @@ if(node_env == 'development') {
 		console.log('uaaConfig.callbackUrl = ' +uaaConfig.callbackUrl );
 		console.log('uaaConfig.appUrl = ' +uaaConfig.appUrl );
 		console.log('windServiceUrl = ' +windServiceUrl );
-		console.log('raspberryPiConfig.assetTagname = ' +raspberryPiConfig.assetTagname );
-		console.log('raspberryPiConfig.assetURL = ' +raspberryPiConfig.assetURL );
-		console.log('raspberryPiConfig.assetZoneId = ' +raspberryPiConfig.assetZoneId );
-		console.log('raspberryPiConfig.timeseriesZone = ' +raspberryPiConfig.timeseriesZone );
-		console.log('raspberryPiConfig.timeseriesURL = ' +raspberryPiConfig.timeseriesURL );
-		console.log('raspberryPiConfig.uaaURL = ' +raspberryPiConfig.uaaURL );
+		console.log('raspberryPiConfig.assetTagname = ' +connectedDeviceConfig.assetTagname );
+		console.log('raspberryPiConfig.assetURL = ' +connectedDeviceConfig.assetURL );
+		console.log('raspberryPiConfig.assetZoneId = ' +connectedDeviceConfig.assetZoneId );
+		console.log('raspberryPiConfig.timeseriesZone = ' +connectedDeviceConfig.timeseriesZone );
+		console.log('raspberryPiConfig.timeseriesURL = ' +connectedDeviceConfig.timeseriesURL );
+		console.log('raspberryPiConfig.uaaURL = ' +connectedDeviceConfig.uaaURL );
 		console.log('***************************');
 
 		//app.configure(function() {
-			app.set('raspberryPiConfig', raspberryPiConfig);
+			app.set('connectedDeviceConfig', connectedDeviceConfig);
 		//});
 
 
