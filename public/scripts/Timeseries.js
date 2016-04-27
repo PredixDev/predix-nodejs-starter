@@ -87,6 +87,9 @@ function getMachineServiceData() {
               nameOfTable.innerHTML = "Asset Information";
 
               var table = document.getElementById("aTable");
+              while (table.firstChild) {
+                  table.removeChild(table.firstChild);
+              }
               keys = Object.keys(resultJSON);
               for(var i = 0; i<keys.length; i++) {
                // Create an empty <tr> element and add it to the 1st position of the table:
@@ -110,6 +113,10 @@ function getMachineServiceData() {
           }
           else {
             document.getElementById("predix_asset_table").innerHTML = "Error getting data for Asset: " + tagString;
+            var table = document.getElementById("aTable");
+            while (table.firstChild) {
+                table.removeChild(table.firstChild);
+            }
           }
         }
 
@@ -452,23 +459,81 @@ function configureTagsTimeseriesData() {
         }
         select = document.getElementById('tagList');
         if (select) {
-          // Create all Tags (assuming separated by comma)
-          var tags = (connectedDeviceConfig.assetTagname).split(",");
-          for (i=0; i < tags.length; i++) {
-            var opt = document.createElement('option');
-            opt.value = tags[i].trim();
-            opt.selected = "selected";
-            opt.innerHTML = tags[i].trim();
-            select.appendChild(opt);
-          }
-        }
-        else {
-          document.getElementById("windService_machine_yearly").innerHTML = "Error getting data for tags";
-        }
+
+          var timeSeriesUaaRequest = new XMLHttpRequest();
+          var timeSeriesAuth = connectedDeviceConfig.uaaBase64ClientCredential;
+          var uaaParams = "grant_type=client_credentials&client_id=" + connectedDeviceConfig.uaaClientId;
+
+          timeSeriesUaaRequest.open('GET', connectedDeviceConfig.uaaURL + "/oauth/token?" + uaaParams, true);
+          timeSeriesUaaRequest.setRequestHeader("Authorization", "Basic " + timeSeriesAuth);
+
+          timeSeriesUaaRequest.onreadystatechange = function() {
+            if (timeSeriesUaaRequest.readyState == 4) {
+
+              var res = JSON.parse(timeSeriesUaaRequest.responseText);
+              accessToken = res.token_type + ' ' + res.access_token;
+
+              var timeSeriesGetAllTags = new XMLHttpRequest();
+
+              var datapointsUrl = connectedDeviceConfig.timeseriesURL;
+              var getAllTagsUrl = datapointsUrl.replace("datapoints", "tags");
+              timeSeriesGetAllTags.open('GET', getAllTagsUrl, true);
+
+              timeSeriesGetAllTags.setRequestHeader("Predix-Zone-Id", connectedDeviceConfig.timeseriesZone);
+              timeSeriesGetAllTags.setRequestHeader("Authorization", accessToken);
+              timeSeriesGetAllTags.setRequestHeader("Content-Type", "application/json");
+
+              timeSeriesGetAllTags.onreadystatechange = function() {
+                if (timeSeriesGetAllTags.status >= 200 && timeSeriesGetAllTags.status < 400) {
+                  var data = JSON.parse(timeSeriesGetAllTags.responseText);
+
+                  // Create all Tags (assuming separated by comma)
+                  var tagsToGenerate = (connectedDeviceConfig.assetTagname).split(",");
+
+                  // Make call to timeseries to get all Tags
+                  for (var i = 0; i < data.results.length; i++) {
+                    var tagname = data.results[i];
+                    if (tagsToGenerate.indexOf(tagname) < 0) {
+                      tagsToGenerate.push(tagname);
+                      console.log("Adding timeseries tag: " + tagname)
+                    }
+                  }
+                  tagListElement = document.getElementById('tagList');
+                  while (tagListElement.firstChild) {
+                      tagListElement.removeChild(tagListElement.firstChild);
+                  }
+
+                  for (i=0; i < tagsToGenerate.length; i++) {
+                    var opt = document.createElement('option');
+                    opt.value = tagsToGenerate[i].trim();
+                    opt.selected = "selected";
+                    opt.innerHTML = tagsToGenerate[i].trim();
+                    tagListElement.appendChild(opt);
+                  }
+                }
+                else {
+                  document.getElementById("windService_machine_yearly").innerHTML = "Error getting tags from Timeseries";
+                }
+              }
+              timeSeriesGetAllTags.send();
+            }
+            else
+            {
+              console.log("No access token");
+            }
+          };
+
+          timeSeriesUaaRequest.onerror = function() {
+            document.getElementById("windService_machine_yearly").innerHTML = "Error getting UAA Token when attempting to query Timeseries";
+          };
+
+          timeSeriesUaaRequest.send();
       }
-      else {
-        getTagsFromMicroservice();
-      }
+    }
+    else {
+      getTagsFromMicroservice();
+    }
+
     },
     function(error) {
       console.error("Failed when getting the RaspberryPi Configurations", error);
