@@ -5,7 +5,7 @@ applications:
   buildpack: nodejs_buildpack
   #command:  DEBUG=express:* node app.js
   command:  node app.js
-services:
+#services:
  # - <your-name>-secure-uaa-instance
  # - <your-name>-timeseries-instance
  # - <your-name>-asset-instance
