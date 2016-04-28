@@ -173,7 +173,8 @@ function getMachineServiceDataWithoutMicroservice() {
       for (i=0; i < tags.length; i++)
       {
         myTimeSeriesBody.tags.push({
-          "name" : tags[i]
+          "name" : tags[i],
+          "limit": 25
       });
       }
       if(starttime) {
@@ -365,7 +366,8 @@ function updateChartWithoutMicroservice() {
         for (i=0; i < tags.length; i++)
         {
           myTimeSeriesBody.tags.push({
-            "name" : tags[i]
+            "name" : tags[i],
+            "limit": 25
         });
         }
 
