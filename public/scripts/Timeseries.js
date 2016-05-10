@@ -112,7 +112,7 @@ function getMachineServiceData() {
             }
           }
           else {
-            document.getElementById("predix_asset_table").innerHTML = "Error getting data for Asset: " + tagString;
+            document.getElementById("predix_asset_table").innerHTML = "No data found for Asset: " + tagString;
             var table = document.getElementById("aTable");
             while (table.firstChild) {
                 table.removeChild(table.firstChild);
