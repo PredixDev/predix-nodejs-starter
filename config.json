@@ -7,11 +7,8 @@
     "assetZoneId": "{The Zone ID for the Asset Service Created}",
     "tagname": "{The Tagname used to create a tag in Asset Service}",
     "timeseries_zone": "{The Zone ID for the Timeseries Service Created}",
-    "_comment": "#{URL of the microservice <your-name>-winddata-timeseries-service}, e.g.  https://your-name-winddata-timeseries-service.run.asw-usw02-pr.predix.io",
-    "windServiceUrl": "windservice.url",
-    "_comment": "{URL of the timeseries-service}, e.g.  https://times-series-store-preix.run.asw-usw02-pr.predix.io/v1/datapoints",
-    "timeseriesUrl": "timeseries.url",
-    "_comment": "{URL of the asset-service}, e.g.  https://predix-asset.run.asw-usw02-pr.predix.io/mydevice1",
-    "assetUrl": "asset.url"
+    "windServiceUrl": "#{URL of the microservice <your-name>-winddata-timeseries-service}, e.g.  https://your-name-winddata-timeseries-service.run.asw-usw02-pr.predix.io",
+    "timeseriesUrl": "{URL of the timeseries-service}, e.g.  https://times-series-store-preix.run.asw-usw02-pr.predix.io/v1/datapoints",
+    "assetUrl": "{URL of the asset-service}, e.g.  https://predix-asset.run.asw-usw02-pr.predix.io/mydevice1"
   }
 }
