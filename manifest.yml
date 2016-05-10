@@ -17,4 +17,4 @@ env:
     # Following properties configured only for Timeseries WindData service Integration
     #windServiceUrl: "{URL of the microservice <your-name>-winddata-timeseries-service}, e.g.  https://your-name-winddata-timeseries-service.run.asw-usw02-pr.predix.io"
     #assetMachine: adrian-type
-    #tagname: test-tag
+    tagname: test-tag
