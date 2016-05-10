@@ -9,7 +9,7 @@ router.use(function(req,res,next){
   if (auth.hasValidSession(req)) {
       next();
   } else {
-    next(res.sendStatus(403).send('Forbidden'));
+    next(res.sendStatus(403).send('This page is Forbidden, return to <a href="/">Home page</a> to login'));
   }
 });
 
