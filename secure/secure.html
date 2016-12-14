@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Predix Machine Shop</title>
+  <link rel="stylesheet" href="stylesheets/style.css"></link>
+  <script src="../scripts/Chart.js"></script>
+  <script src="../scripts/Timeseries.js"></script>
+  <script src="../scripts/Asset.js"></script>
+  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+</head>
+<body onload="configureTagsTimeseriesData();">
+    <div class="header">
+    <div>
+    <h2>My First Predix Sample Application</h2>
+    <h4>Predix Developer Kit</h4>
+  </div>
+  <div>
+  </div>
+<div class="header-logo-container">
+    <img  class="header-logo" src="/images/predix_logo.svg"></img>
+    </div>
+  </div>
+  <div class="container">
+    <h2>Welcome to a Secure Page.</h2>
+    <p>This page is gated by the check_token call of UAA.</p>
+
+    <ul>
+      <li>
+        <a href="/">Home</a>
+      </li>
+      <li>
+        <a href="/logout">Logout</a>
+      </li>
+    </ul>
+<!--
+    <h3 id="tag_list_title">Wind Data Microservices Integration</h3>
+    <div class="timeseries_machine_container">
+      <table>
+        <tr>
+          <td>
+            <p><b id="predix_asset_table"></b></p>
+            <table id="aTable"></table>
+            <div style="height:100px;,left: 0">
+              <a href="javascript:detailAssetModel();" id="assset_detail_link" style="display: none;">View Asset Model</a>
+            </div>
+
+            <div id="myModal" class="modal">
+
+              <div class="modal-content">
+                <span class="close" onclick="assetDetailCLose();">x</span>
+                  <textarea id="asset_detail_model" class="asset_detail_model" style="width:100%"></textarea>
+              </div>
+
+            </div>
+          </td>
+          <td>
+        <p> <b>Select the tags </b></p>
+        <select multiple id="tagList" class='tag-multiple'>
+        </select>
+      </td><td>
+        <p> <b>Select start time</b></p>
+          <select id='start-time' class ='start-time'>
+            <option value="5mi-ago">5mi-ago</option>
+            <option value="15mi-ago">15mi-ago</option>
+            <option value="30mi-ago">30mi-ago</option>
+            <option value="45mi-ago">45mi-ago</option>
+            <option value="45mi-ago">45mi-ago</option>
+            <option value="1h-ago">1h-ago</option>
+            <option value="5h-ago">5h-ago</option>
+            <option value="10h-ago">10h-ago</option>
+            <option value="1d-ago">1d-ago</option>
+            <option value="5d-ago">5d-ago</option>
+            <option value="10d-ago">10d-ago</option>
+            <option value="1w-ago">1w-ago</option>
+            <option value="2w-ago">2w-ago</option>
+            <option value="3w-ago">3w-ago</option>
+            <option value="1mm-ago">1mm-ago</option>
+            <option value="2mm-ago">2mm-ago</option>
+            <option value="3mm-ago">3mm-ago</option>
+            <option value="5mm-ago">5mm-ago</option>
+            <option value="6mm-ago">6mm-ago</option>
+            <option value="8mm-ago">8mm-ago</option>
+            <option value="1y-ago" selected='selected'>1y-ago</option>
+          </select>
+
+      </td></tr></table>
+        <button type="button" class="timeseries_button" id="timeseries_button" onclick="onclick_machineServiceData();">Submit</button>
+        <p id="windService_machine_yearly"></p>
+        <div id="final-tweet-btn" class="hide-final-tweet">
+          <p>Congratulations on successfully completing your workshop! Post your final tweet by clicking on:</p>
+          <a href="https://twitter.com/intent/tweet?button_hashtag=PredixBuilder&text=I just built an industrial strength app on @Predix using #IntelEdison!" class="twitter-hashtag-button" data-size="large" data-related="predix">Tweet #PredixBuilder</a>
+        </div>
+        <div style="width:100%">
+          <h3 id='line_chart_info'></h3>
+          <div id="add_machine_canvas">
+            <p id="windService_machine_tag"></p>
+          </div>
+      </div>
+    </div>
+-->
+    <div class="footer">
+      <div class="footer-logo-container">
+        <img class="footer-logo" src="/images/monogram-wdmk.png"></img>
+      </div>
+    </div>
+  </body>
+
+</html>
