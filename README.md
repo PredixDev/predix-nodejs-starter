@@ -1,6 +1,6 @@
 Predix Development Kit - NodeJs Starter Application
 ==========================================================
-
+ 
 This is simple starter Node application that demonstrates user authentication with Predix UAA,
 and integration with microservices.
 
