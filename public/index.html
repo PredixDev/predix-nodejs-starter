@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Predix Node JS Starter App</title>
+  <link rel="stylesheet" href="stylesheets/style.css"></link>
+  <script src="../scripts/learningpaths.js"></script>
+</head>
+<body onload="learningPaths(this);">
+<body>
+  <div class="header">
+    <div>
+    <h2>My First Predix Sample Application</h2>
+    <h4>Predix Developer Kit</h4>
+  </div>
+  <div>
+  </div>
+  <div class="header-logo-container">
+    <img  class="header-logo" src="/images/predix_logo.svg"></img>
+    </div>
+  </div>
+  <section class="section">
+    <ul id=learningpaths.cloudbasics style="display:none">
+        <li>
+            <h3>Welcome to a simple Node.js Express App</h3>
+          </li>
+        <div class="body-img-container">
+          <img class="body-img" src="/images/wind-turbine-2.png"></img>
+        </div>
+        <div class="body-container">
+          <li>
+            <h3>What's Inside
+          </li>
+          <li>
+            This app displays <a target="_blank" href="https://github.com/PredixDev/predix-nodejs-starter/blob/master/public"> index.html</a> (that's the page your are reading now).  Notice it's in the public directory?
+          </li>
+          <li>
+            Node.js loads the app on the server side in the file <a target="_blank" href="https://github.com/PredixDev/predix-nodejs-starter/tree/master/server"> app.js</a>.  Notice this file is in the server directory?
+          </li>
+          <li>
+            The <a target="_blank" href="https://github.com/PredixDev/predix-nodejs-starter/tree/master/server/routes/index.js"> routes/index.js</a> is used to set up a route url for this app.  Routes are how Node.js matches logic tied to a url. Notice this file is in the server/routes directory?
+          </li>
+          <li>
+            The other files become enabled in future tutorials.
+          </li>
+          <br>
+          <li>
+            <h3>What's Next
+          </li>
+          <li>
+            <p>Visit <a target="_blank" href="https://www.predix.io/resources/tutorials/tutorial-details.html?tutorial_id=1523&tag=1719&journey=Hello%20World&resources=1475,1569,1523"> Back End Hello World </a>.</p>
+            <p>To turn on Login and view a secure page, continue with the <a target="_blank" href="https://www.predix.io/resources/tutorials/journey.html#1605"> Build a Basic App Guide</a>.</p>
+          </li>
+        </div>
+      </ul>
+      <ul id=learningpaths.authentication style="display:none">
+        <p>This sample app shows how a basic web application works with Predix UAA.</p>
+        <li id=login >
+          <a href="/login?state=secure">Login</a>
+        </li>
+        <li id=securepage >
+          <a href="/secure">Secure Page</a>
+        </li>
+    </ul>
+  </section>
+  <div class="footer">
+    <div class="footer-logo-container">
+      <img class="footer-logo" src="/images/monogram-wdmk.png"></img>
+    </div>
+  </div>
+</body>
+</html>
