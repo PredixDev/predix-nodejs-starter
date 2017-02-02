@@ -21,7 +21,7 @@
     "https-proxy-agent": "^1.0.0",
     "passport": ">= 0.0.0",
     "passport-oauth2-middleware": "*",
-    "passport-predix-oauth": "https://github.build.ge.com/adoption/passport-predix-oauth.git#master",
+    "passport-predix-oauth": "0.1.6",
     "request": "~2.67.0",
     "url": "~0.11.0"
   },
