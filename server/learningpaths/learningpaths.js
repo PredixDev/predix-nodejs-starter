@@ -1,7 +1,17 @@
-var learningPathsConfig = {
-	"cloudbasics" : true,
-	"authorization" : false
+var getLearningPaths = function(predixConfig) {
+	if (predixConfig.isUaaConfigured()) {
+		return {
+			"cloudbasics" : false,
+			"authorization" : true
+		};
+	} else {
+		return {
+			"cloudbasics" : true,
+			"authorization" : false
+		};
+	}
 };
 
-module.exports = { learningPathsConfig: learningPathsConfig
+module.exports = { 
+	getLearningPaths: getLearningPaths
 };

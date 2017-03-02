@@ -6,9 +6,6 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var proxy = require('./routes/proxy'); // used when requesting data from real services.
 
-//turns on or off text or links depending on which tutorial you are in, guides you to the next tutorial
-var learningpaths = require('./learningpaths/learningpaths.js');
-
 var index = require('./routes/index');
 
 // get config settings from local file or VCAPS env var in the cloud
@@ -31,13 +28,12 @@ var windServiceURL = devConfig ? devConfig.windServiceURL : process.env.windServ
 
 console.log('************'+node_env+'******************');
 
-var uaaIsConfigured = config.clientId &&
-    config.uaaURL &&
-    config.uaaURL.indexOf('https') === 0 &&
-    config.base64ClientCredential;
-if (uaaIsConfigured) {
+if (config.isUaaConfigured()) {
 	passport = passportConfig.configurePassportStrategy(config);
 }
+
+//turns on or off text or links depending on which tutorial you are in, guides you to the next tutorial
+var learningpaths = require('./learningpaths/learningpaths.js');
 
 /**********************************************************************
        SETTING UP EXRESS SERVER
@@ -55,10 +51,10 @@ app.use(session({
 	resave: true,
 	saveUninitialized: true}));
 
-if (uaaIsConfigured) {
-  app.use(passport.initialize());
+if (config.isUaaConfigured()) {
+	app.use(passport.initialize());
   // Also use passport.session() middleware, to support persistent login sessions (recommended).
-  app.use(passport.session());
+	app.use(passport.session());
 }
 
 //Initializing application modules
@@ -89,12 +85,12 @@ SET UP MOCK API ROUTES
 //route to retrieve learningpath info which drives what is displayed
 app.get('/learning-paths', function(req, res) {
 	//console.log(learningpaths);
-	res.json({"learningPathsConfig": learningpaths.learningPathsConfig});
+	res.json({"learningPathsConfig": learningpaths.getLearningPaths(config)});
 });
 
 app.use(express.static(path.join(__dirname, process.env['base-dir'] ? process.env['base-dir'] : '../public')));
 
-if (uaaIsConfigured) {
+if (config.isUaaConfigured()) {
 	//Use this route to make the entire app secure.  This forces login for any path in the entire app.
 	app.use('/', index);
   //login route redirect to predix uaa login page
