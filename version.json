@@ -1,0 +1,13 @@
+{
+  "name": "Predix Front End Web App.html",
+  "version": "1.0.11",
+  "private": true,
+  "dependencies": {
+    "local-setup": "https://github.build.ge.com/adoption/local-setup#develop",
+    "predix-scripts": "https://github.build.ge.com/adoption/predix-scripts#develop",
+    "Predix-HelloWorld-WebApp": "https://github.build.ge.com/adoption/Predix-HelloWorld-WebApp.git#develop",
+    "predix-nodejs-starter": "https://github.build.ge.com/adoption/predix-nodejs-starter#develop",
+    "winddata-timeseries-service": "https://github.build.ge.com/adoption/winddata-timeseries-service.git#develop"
+  },
+  "author": "turnerth"
+}
