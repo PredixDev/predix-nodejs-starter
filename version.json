@@ -1,13 +1,13 @@
 {
   "name": "Predix Front End Web App.html",
-  "version": "1.0.11",
+  "version": "1.1.0",
   "private": true,
   "dependencies": {
-    "local-setup": "https://github.build.ge.com/adoption/local-setup#develop",
-    "predix-scripts": "https://github.build.ge.com/adoption/predix-scripts#develop",
-    "Predix-HelloWorld-WebApp": "https://github.build.ge.com/adoption/Predix-HelloWorld-WebApp.git#develop",
-    "predix-nodejs-starter": "https://github.build.ge.com/adoption/predix-nodejs-starter#develop",
-    "winddata-timeseries-service": "https://github.build.ge.com/adoption/winddata-timeseries-service.git#develop"
+    "local-setup": "https://github.build.ge.com/adoption/local-setup#1.0.11",
+    "predix-scripts": "https://github.build.ge.com/adoption/predix-scripts#1.0.17",
+    "Predix-HelloWorld-WebApp": "https://github.build.ge.com/adoption/Predix-HelloWorld-WebApp.git#1.0.2",
+    "predix-nodejs-starter": "https://github.build.ge.com/adoption/predix-nodejs-starter#1.0.108",
+    "winddata-timeseries-service": "https://github.build.ge.com/adoption/winddata-timeseries-service.git#2.0.20"
   },
   "author": "turnerth"
 }
