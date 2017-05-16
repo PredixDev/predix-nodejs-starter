@@ -75,7 +75,7 @@ env:
     tagname: <The asset tag pushed to Asset service>
 ```
 
-`cf push <appName> -f my-app-manifest.yml`
+`predix push <appName> -f my-app-manifest.yml`
 
 [![Analytics](https://ga-beacon.appspot.com/UA-82773213-1/predix-nodejs-starter/readme?pixel)](https://github.com/PredixDev)
  

@@ -47,7 +47,7 @@ REPO_NAME=predix-nodejs-starter
 SCRIPT_NAME="quickstart-front-end-template.sh"
 APP_NAME="Predix Front End WebApp Microservice Template"
 TOOLS="Cloud Foundry CLI, Git, Node.js, Predix CLI"
-TOOLS_SWITCHES="--git --cf --nodejs --maven"
+TOOLS_SWITCHES="--cf --git --nodejs --predixcli"
 
 local_read_args $@
 IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/$BRANCH/izon.sh"
