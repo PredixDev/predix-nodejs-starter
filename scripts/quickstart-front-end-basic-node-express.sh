@@ -45,6 +45,7 @@ VERSION_JSON="version.json"
 PREDIX_SCRIPTS=predix-scripts
 REPO_NAME=predix-nodejs-starter
 SCRIPT_NAME="quickstart-front-end-webapp.sh"
+APP_DIR="build-basic-app"
 APP_NAME="Predix Front End Basic App - Node.js Express with UAA, Asset, Time Series"
 TOOLS="Cloud Foundry CLI, Git, Node.js, Maven, Predix CLI"
 TOOLS_SWITCHES="--cf --git --nodejs --maven --predixcli"
@@ -74,6 +75,10 @@ function init() {
   if [[ $currentDir == *"scripts" ]]; then
     echo 'Please launch the script from the root dir of the project'
     exit 1
+  fi
+  if [[ ! $currentDir == *"$REPO_NAME" ]]; then
+    mkdir -p $APP_DIR
+    cd $APP_DIR
   fi
 
   check_internet
