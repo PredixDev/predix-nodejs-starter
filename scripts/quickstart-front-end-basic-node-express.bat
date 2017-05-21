@@ -4,6 +4,8 @@ set CURRENTDIR=%cd%
 echo "currentdir=!CURRENTDIR!"
 SET FILE_NAME=%0
 SET BRANCH=master
+SET SKIP_SETUP=FALSE
+SET CF_URL=""
 
 :GETOPTS
   IF /I [%1] == [--skip-setup] SET SKIP_SETUP=TRUE
@@ -31,10 +33,14 @@ IF [!BRANCH!]==[] (
 
 SET IZON_BAT=https://raw.githubusercontent.com/PredixDev/izon/master/izon.bat
 SET TUTORIAL="https://www.predix.io/resources/tutorials/tutorial-details.html?tutorial_id=1569&tag=1719&journey=Hello%20World&resources=1844,1475,1569,1523"
-SET SHELL_SCRIPT_NAME=quickstart-front-end-template.sh
+SET REPO_NAME=predix-nodejs-starter
+SET SHELL_SCRIPT_NAME=quickstart-front-end-basic-node-express.sh
 SET APP_NAME=Front End Basic App - Node.js Express with UAA, Asset, Time Series
 SET TOOLS=Cloud Foundry CLI, Git, Node.js, Maven, Predix CLI
 SET TOOLS_SWITCHES=/cf /git /nodejs /maven /predixcli
+
+SET SHELL_SCRIPT_URL=https://raw.githubusercontent.com/PredixDev/!REPO_NAME!/!BRANCH!/scripts/!SHELL_SCRIPT_NAME!
+
 GOTO START
 
 :CHECK_DIR
@@ -84,7 +90,7 @@ GOTO :eof
     ECHO Exiting tutorial.  Please launch the script from the root dir of the project
     EXIT /b 1
   )
-  
+
   ECHO Let's start by verifying that you have the required tools installed.
   SET /p answer=Should we install the required tools if not already installed (!TOOLS!)?
   IF "!answer!"=="" (
@@ -157,9 +163,10 @@ if !CF_URL!=="" (
   cf login -a !CF_URL! -u !CF_USER! -p !CF_PASSWORD! -o !CF_ORG! -s !CF_SPACE!
 )
 
-ECHO Running the !CURRENTDIR!\scripts\%SHELL_SCRIPT_NAME% script using Git-Bash
+powershell -Command "(new-object net.webclient).DownloadFile('!SHELL_SCRIPT_URL!','!CURRENTDIR!\!SHELL_SCRIPT_NAME!')"
+ECHO Running the !CURRENTDIR!\%SHELL_SCRIPT_NAME% script using Git-Bash
 cd !CURRENTDIR!
 ECHO.
-"%PROGRAMFILES%\Git\bin\bash" --login -i -- "!CURRENTDIR!\scripts\%SHELL_SCRIPT_NAME%" -b !BRANCH! --skip-setup !QUICKSTART_ARGS!
+"%PROGRAMFILES%\Git\bin\bash" --login -i -- "!CURRENTDIR!\%SHELL_SCRIPT_NAME%" -b !BRANCH! --skip-setup !QUICKSTART_ARGS!
 
 POPD
