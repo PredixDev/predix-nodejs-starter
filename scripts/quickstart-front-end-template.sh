@@ -102,7 +102,9 @@ else
   fi
 fi
 
+echo "getPredixScripts"
 getPredixScripts
+echo "gotPredixScripts"
 #clone the repo itself if running from oneclick script
 getCurrentRepo
 
