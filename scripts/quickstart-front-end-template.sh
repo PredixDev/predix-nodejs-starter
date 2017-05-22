@@ -86,8 +86,11 @@ function init() {
   #get the script that reads version.json
   eval "$(curl -s -L $IZON_SH)"
 
+  echo "getVersionFile"
   getVersionFile
+  echo "gotVersionFile"
   getLocalSetupFuncs
+  echo "gotLocalSetupFuncs"
 }
 
 if [[ $PRINT_USAGE == 1 ]]; then
