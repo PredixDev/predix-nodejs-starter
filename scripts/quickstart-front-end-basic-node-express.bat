@@ -35,11 +35,13 @@ SET IZON_BAT=https://raw.githubusercontent.com/PredixDev/izon/master/izon.bat
 SET TUTORIAL="https://www.predix.io/resources/tutorials/tutorial-details.html?tutorial_id=1569&tag=1719&journey=Hello%20World&resources=1844,1475,1569,1523"
 SET REPO_NAME=predix-nodejs-starter
 SET SHELL_SCRIPT_NAME=quickstart-front-end-basic-node-express.sh
+SET APP_DIR="build-basic-app"
 SET APP_NAME=Front End Basic App - Node.js Express with UAA, Asset, Time Series
 SET TOOLS=Cloud Foundry CLI, Git, Node.js, Maven, Predix CLI
 SET TOOLS_SWITCHES=/cf /git /nodejs /maven /predixcli
 
 SET SHELL_SCRIPT_URL=https://raw.githubusercontent.com/PredixDev/!REPO_NAME!/!BRANCH!/scripts/!SHELL_SCRIPT_NAME!
+SET VERSION_JSON_URL=https://raw.githubusercontent.com/PredixDev/!REPO_NAME!/!BRANCH!/version.json
 
 GOTO START
 
@@ -91,6 +93,10 @@ GOTO :eof
     EXIT /b 1
   )
 
+  mkdir !APP_DIR!
+  PUSHD !APP_DIR!
+  cd
+
   ECHO Let's start by verifying that you have the required tools installed.
   SET /p answer=Should we install the required tools if not already installed (!TOOLS!)?
   IF "!answer!"=="" (
@@ -105,8 +111,8 @@ GOTO :eof
 
     CALL :GET_DEPENDENCIES
 
-    ECHO Calling %TEMP%\setup-windows.bat
-    CALL "%TEMP%\setup-windows.bat" !TOOLS_SWITCHES!
+    ECHO Calling setup-windows.bat
+    CALL "setup-windows.bat" !TOOLS_SWITCHES!
     IF NOT !errorlevel! EQU 0 (
       ECHO.
       ECHO "Unable to install tools.  Is there a proxy server?  Perhaps if you go on a regular internet connection (turning off any proxy variables), the tools portion of the install will succeed.  Please read this tutorial for detailed info about setting your proxy https://www.predix.io/resources/tutorials/tutorial-details.html?tutorial_id=1565"
@@ -122,22 +128,21 @@ GOTO :eof
 :GET_DEPENDENCIES
   ECHO Getting Dependencies
 
-  powershell -Command "(new-object net.webclient).DownloadFile('!IZON_BAT!','%TEMP%\izon.bat')"
-  xcopy /y !CURRENTDIR!\version.json %TEMP%
-  CALL %TEMP%\izon.bat READ_DEPENDENCY local-setup LOCAL_SETUP_URL LOCAL_SETUP_BRANCH %TEMP%
+  powershell -Command "(new-object net.webclient).DownloadFile('!IZON_BAT!','izon.bat')"
+  powershell -Command "(new-object net.webclient).DownloadFile('!VERSION_JSON_URL!','version.json')"
+  CALL izon.bat READ_DEPENDENCY local-setup LOCAL_SETUP_URL LOCAL_SETUP_BRANCH %cd%
   ECHO "LOCAL_SETUP_BRANCH=!LOCAL_SETUP_BRANCH!"
   SET SETUP_WINDOWS=https://raw.githubusercontent.com/PredixDev/local-setup/!LOCAL_SETUP_BRANCH!/setup-windows.bat
   rem SET SETUP_WINDOWS=https://raw.githubusercontent.com/PredixDev/local-setup/!LOCAL_SETUP_BRANCH!/setup-windows.bat
 
   ECHO !SETUP_WINDOWS!
-  powershell -Command "(new-object net.webclient).DownloadFile('!SETUP_WINDOWS!','%TEMP%\setup-windows.bat')"
+  powershell -Command "(new-object net.webclient).DownloadFile('!SETUP_WINDOWS!','setup-windows.bat')"
 
 GOTO :eof
 
 :START
 
 CALL :CHECK_DIR
-PUSHD "%TEMP%"
 
 ECHO.
 ECHO Welcome to the !APP_NAME! Quickstart.
@@ -152,9 +157,6 @@ if "!SKIP_SETUP!"=="FALSE" (
 CALL :CHECK_FAIL
 IF NOT !errorlevel! EQU 0 EXIT /b !errorlevel!
 
-POPD
-
-PUSHD "%USERPROFILE%"
 
 if !CF_URL!=="" (
   ECHO CF_URL=!CF_URL!
@@ -168,5 +170,3 @@ ECHO Running the !CURRENTDIR!\%SHELL_SCRIPT_NAME% script using Git-Bash
 cd !CURRENTDIR!
 ECHO.
 "%PROGRAMFILES%\Git\bin\bash" --login -i -- "!CURRENTDIR!\%SHELL_SCRIPT_NAME%" -b !BRANCH! --skip-setup !QUICKSTART_ARGS!
-
-POPD
