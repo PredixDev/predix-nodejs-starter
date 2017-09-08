@@ -4,7 +4,7 @@ applications:
   memory: 128M
   buildpack: nodejs_buildpack
   #command:  DEBUG=express:* node app.js
-  command:  node app.js
+  command:  node server/app.js
 #services:
  # - your-name-uaa
  # - your-name-time-series

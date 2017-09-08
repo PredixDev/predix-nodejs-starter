@@ -1,6 +1,6 @@
 ---
 applications:
-- name: predix-nodejs-starter
+- name: <your-name>-predix-nodejs-starter Change
   memory: 128M
   buildpack: nodejs_buildpack
   #command:  DEBUG=express:* node app.js
@@ -13,7 +13,6 @@ env:
     node_env: cloud
     uaa_service_label : predix-uaa
     #clientId: {Enter client ID, e.g. app_client_id, and place it here}
-    #base64ClientCredential: dWFhLWNsaWVudC1pZDp1YWEtY2xpZW50LWlkLXNlY3JldA==
+    #base64ClientCredential: {Get clientID:clientSecret then base64 encode and place it here}
     # Following properties configured only for Timeseries WindData service Integration
-    #windServiceURL: "{URL of the microservice <your-name>-winddata-timeseries-service}, e.g.  https://your-name-winddata-timeseries-service.run.asw-usw02-pr.predix.io"
-    #assetMachine: my-type
+    #windServiceUrl: "{URL of the microservice <your-name>-winddata-timeseries-service}, e.g.  https://your-name-winddata-timeseries-service.run.asw-usw02-pr.predix.io"
