@@ -1,6 +1,6 @@
 {
   "name": "predix-nodejs-starter",
-  "version": "1.1.102",
+  "version": "1.1.104",
   "private": true,
   "scripts": {
     "start": "node server/app.js",
