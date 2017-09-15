@@ -1,12 +1,12 @@
 {
   "name": "Predix Front End Web App.html",
-  "version": "1.1.104",
+  "version": "1.1.107",
   "private": true,
   "dependencies": {
-    "local-setup": "https://github.com/PredixDev/local-setup#1.0.16",
-    "predix-scripts": "https://github.com/PredixDev/predix-scripts#1.1.43",
-    "Predix-HelloWorld-WebApp": "https://github.com/PredixDev/Predix-HelloWorld-WebApp#1.1.60",
-    "predix-nodejs-starter": "https://github.com/PredixDev/predix-nodejs-starter#1.1.104",
+    "local-setup": "https://github.com/PredixDev/local-setup#1.0.17",
+    "predix-scripts": "https://github.com/PredixDev/predix-scripts#1.1.44",
+    "Predix-HelloWorld-WebApp": "https://github.com/PredixDev/Predix-HelloWorld-WebApp#1.1.62",
+    "predix-nodejs-starter": "https://github.com/PredixDev/predix-nodejs-starter#1.1.107",
     "winddata-timeseries-service": "https://github.com/PredixDev/winddata-timeseries-service#2.0.29"
   },
   "author": "turnerth"
