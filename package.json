@@ -1,6 +1,6 @@
 {
   "name": "predix-nodejs-starter",
-  "version": "1.1.135",
+  "version": "1.1.139",
   "private": true,
   "scripts": {
     "start": "node server/app.js",
@@ -18,7 +18,7 @@
     "https-proxy-agent": "^1.0.0",
     "passport": ">= 0.0.0",
     "passport-oauth2-middleware": "*",
-    "passport-predix-oauth": "0.1.44",
+    "passport-predix-oauth": "0.1.48",
     "request": "~2.67.0",
     "url": "~0.11.0"
   },
