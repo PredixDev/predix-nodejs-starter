@@ -1,6 +1,6 @@
 {
   "name": "Predix Front End Web App.html",
-  "version": "1.1.156",
+  "version": "1.1.157",
   "private": true,
   "dependencies": {
     "local-setup": "https://github.com/PredixDev/local-setup#1.0.88",
