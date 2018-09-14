@@ -35,6 +35,7 @@ function local_read_args() {
   fi
 }
 
+IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/1.1.0/izon2.sh"
 BRANCH="master"
 PRINT_USAGE=0
 SKIP_SETUP=false
@@ -47,19 +48,24 @@ REPO_NAME=predix-nodejs-starter
 SCRIPT_NAME="quickstart-front-end-template.sh"
 APP_DIR="frontend-microservice-template"
 APP_NAME="Predix Front End WebApp Microservice Template"
+GITHUB_RAW="https://raw.githubusercontent.com/PredixDev"
 TOOLS="Cloud Foundry CLI, Git, Node.js, Predix CLI"
 TOOLS_SWITCHES="--cf --git --nodejs --predixcli"
 
+# Process switches
 local_read_args $@
-IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/$BRANCH/izon.sh"
-VERSION_JSON_URL=https://raw.githubusercontent.com/PredixDev/predix-nodejs-starter/$BRANCH/version.json
 
+#variables after processing switches
+echo "branch=$BRANCH"
+SCRIPT_LOC="$GITHUB_RAW/$REPO_NAME/$BRANCH/scripts/$SCRIPT_NAME"
+VERSION_JSON_URL="$GITHUB_RAW/$REPO_NAME/$BRANCH/version.json"
+echo "VERSION_JSON_URL=$VERSION_JSON_URL"
 
 function check_internet() {
   set +e
   echo ""
   echo "Checking internet connection..."
-  curl "http://google.com" > /dev/null 2>&1
+  curl "http://github.com" > /dev/null 2>&1
   if [ $? -ne 0 ]; then
     echo "Unable to connect to internet, make sure you are connected to a network and check your proxy settings if behind a corporate proxy"
     echo "If you are behind a corporate proxy, set the 'http_proxy' and 'https_proxy' environment variables."
@@ -85,9 +91,10 @@ function init() {
 
   #get the script that reads version.json
   eval "$(curl -s -L $IZON_SH)"
-
+  getUsingCurl $SCRIPT_LOC
+  chmod 755 $SCRIPT_NAME
   getVersionFile
-  getLocalSetupFuncs
+  getLocalSetupFuncs $GITHUB_RAW
 }
 
 if [[ $PRINT_USAGE == 1 ]]; then

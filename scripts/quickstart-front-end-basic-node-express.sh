@@ -35,25 +35,31 @@ function local_read_args() {
   fi
 }
 
+# default settings
 BRANCH="master"
 PRINT_USAGE=0
 SKIP_SETUP=false
+
+IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/1.1.0/izon2.sh"
 #ASSET_MODEL="-amrmd predix-ui-seed/server/sample-data/predix-asset/asset-model-metadata.json predix-ui-seed/server/sample-data/predix-asset/asset-model.json"
 SCRIPT="-script build-basic-app.sh -script-readargs build-basic-app-readargs.sh"
 QUICKSTART_ARGS="-ba -uaa -asset -ts -wd -nsts $SCRIPT"
 VERSION_JSON="version.json"
 PREDIX_SCRIPTS=predix-scripts
 REPO_NAME=predix-nodejs-starter
-SCRIPT_NAME="quickstart-front-end-webapp.sh"
+SCRIPT_NAME="quickstart-front-end-basic-node-express.sh"
+GITHUB_RAW="https://raw.githubusercontent.com/PredixDev"
 APP_DIR="build-basic-app"
 APP_NAME="Predix Front End Basic App - Node.js Express with UAA, Asset, Time Series"
 TOOLS="Cloud Foundry CLI, Git, Node.js, Maven, Predix CLI"
 TOOLS_SWITCHES="--cf --git --nodejs --maven --predixcli"
 
+# Process switches
 local_read_args $@
-IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/$BRANCH/izon.sh"
-VERSION_JSON_URL=https://raw.githubusercontent.com/PredixDev/predix-nodejs-starter/$BRANCH/version.json
 
+#variables after processing switches
+SCRIPT_LOC="$GITHUB_RAW/$REPO_NAME/$BRANCH/$SCRIPT_NAME"
+VERSION_JSON_URL="$GITHUB_RAW/$REPO_NAME/$BRANCH/version.json"
 
 function check_internet() {
   set +e
@@ -86,9 +92,10 @@ function init() {
 
   #get the script that reads version.json
   eval "$(curl -s -L $IZON_SH)"
-
+  getUsingCurl $SCRIPT_LOC
+  chmod 755 $SCRIPT_NAME
   getVersionFile
-  getLocalSetupFuncs
+  getLocalSetupFuncs $GITHUB_RAW
 }
 
 if [[ $PRINT_USAGE == 1 ]]; then
