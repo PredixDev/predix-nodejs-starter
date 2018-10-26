@@ -35,7 +35,7 @@ function local_read_args() {
   fi
 }
 
-IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/1.1.0/izon2.sh"
+IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/1.2.0/izon2.sh"
 BRANCH="master"
 PRINT_USAGE=0
 SKIP_SETUP=false
@@ -82,17 +82,21 @@ function init() {
     echo 'Please launch the script from the root dir of the project'
     exit 1
   fi
-  if [[ ! $currentDir == *"$REPO_NAME" ]]; then
-    mkdir -p $APP_DIR
-    cd $APP_DIR
-  fi
 
   check_internet
 
   #get the script that reads version.json
   eval "$(curl -s -L $IZON_SH)"
+  
+  #download the script and cd
   getUsingCurl $SCRIPT_LOC
   chmod 755 $SCRIPT_NAME
+  if [[ ! $currentDir == *"$REPO_NAME" ]]; then
+    mkdir -p $APP_DIR
+    cd $APP_DIR
+  fi
+
+  
   getVersionFile
   getLocalSetupFuncs $GITHUB_RAW
 }
