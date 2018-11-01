@@ -35,7 +35,7 @@ function local_read_args() {
   fi
 }
 
-IZON_SH="https://raw.githubusercontent.com/PredixDev/izon/1.2.0/izon2.sh"
+IZON_SH="https://raw.githubusercontent.com/PredixDev/izon//izon2.sh"
 BRANCH="master"
 PRINT_USAGE=0
 SKIP_SETUP=false
