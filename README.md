@@ -76,5 +76,5 @@ env:
 ```
 3. `predix push <appName> -f my-app-manifest.yml`
 
-[![Analytics](https://ga-beacon.appspot.com/UA-82773213-1/predix-nodejs-starter/readme?pixel)](https://github.com/PredixDev)
+[![Analytics](https://predix-beacon.appspot.com/UA-82773213-1/predix-nodejs-starter/readme?pixel)](https://github.com/PredixDev)
  

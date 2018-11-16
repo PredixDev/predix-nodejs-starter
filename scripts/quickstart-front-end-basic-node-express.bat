@@ -31,7 +31,7 @@ IF [!BRANCH!]==[] (
   EXIT /b 1
 )
 
-SET IZON_BAT=https://raw.githubusercontent.com/PredixDev/izon/master/izon.bat
+SET IZON_BAT=https://raw.githubusercontent.com/PredixDev/izon/1.2.0/izon.bat
 SET TUTORIAL="https://www.predix.io/resources/tutorials/tutorial-details.html?tutorial_id=1569&tag=1719&journey=Hello%20World&resources=1844,1475,1569,1523"
 SET REPO_NAME=predix-nodejs-starter
 SET SHELL_SCRIPT_NAME=quickstart-front-end-basic-node-express.sh
